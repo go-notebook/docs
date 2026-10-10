@@ -129,6 +129,10 @@ jobs:
               *img.shields.io*) continue ;;
               # Documented placeholders, not hosts.
               *example.com*|*example.org*|*example.net*|*localhost*|*127.0.0.1*|*.invalid*) continue ;;
+              # This site's own pages: they exist only once this workflow
+              # has deployed them, and the offline check above already
+              # proves every link inside the site.
+              *go-notebook.github.io/docs*) continue ;;
             esac
             # Three attempts: one is a flake detector rather than a link
             # checker, and a lane that fails at random gets ignored.
