@@ -1,0 +1,124 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>go-notebook – Kernel</title><link>https://go-notebook.github.io/docs/main/tags/kernel/</link><description>Recent content in Kernel on go-notebook</description><generator>Hugo -- gohugo.io</generator><language>en</language><atom:link href="https://go-notebook.github.io/docs/main/tags/kernel/index.xml" rel="self" type="application/rss+xml"/><item><title>The kernel: what runs, and what is kept</title><link>https://go-notebook.github.io/docs/main/kernel/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://go-notebook.github.io/docs/main/kernel/</guid><description>
+&lt;p&gt;Each run takes the notebook&amp;rsquo;s current code cells and does &lt;strong&gt;the least work
+that brings every result up to date&lt;/strong&gt;. Four steps get there: the analysis of
+the cells, the generated program, the cell keys, and the value store.&lt;/p&gt;
+&lt;h2 data-hextra-search-id="the-dependency-graph"&gt;The dependency graph&lt;span class="hx:absolute hx:-mt-20" id="the-dependency-graph"&gt;&lt;/span&gt;
+&lt;a href="#the-dependency-graph" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Package &lt;a href="https://github.com/go-notebook/notebook/tree/main/analysis" target="_blank" rel="noopener"&gt;&lt;code&gt;analysis&lt;/code&gt;&lt;/a&gt;
+finds each cell&amp;rsquo;s &lt;strong&gt;definitions&lt;/strong&gt; and &lt;strong&gt;free identifiers&lt;/strong&gt; from the parse alone.
+It needs no type information, so it works on code that does not compile yet.&lt;/p&gt;
+&lt;p&gt;A cell depends on the cells that define the names it reads. That gives the
+graph, the order of execution, and the static errors: &lt;strong&gt;cycles&lt;/strong&gt;, &lt;strong&gt;double
+definitions&lt;/strong&gt; and &lt;strong&gt;assignments to another cell&amp;rsquo;s variable&lt;/strong&gt; (see
+&lt;a href="https://go-notebook.github.io/docs/main/cells/#the-three-rules"&gt;Cells&lt;/a&gt;). The order is therefore a function of the
+code, never of the order cells were run in or appear in.&lt;/p&gt;
+&lt;h2 data-hextra-search-id="the-generated-program"&gt;The generated program&lt;span class="hx:absolute hx:-mt-20" id="the-generated-program"&gt;&lt;/span&gt;
+&lt;a href="#the-generated-program" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Package &lt;a href="https://github.com/go-notebook/notebook/tree/main/gen" target="_blank" rel="noopener"&gt;&lt;code&gt;gen&lt;/code&gt;&lt;/a&gt; writes the
+Go program the kernel compiles:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;each cell becomes a function;&lt;/li&gt;
+&lt;li&gt;its variables become package-level variables, so every cell can read them and
+their values outlive the call. That needs their types, so &lt;code&gt;gen&lt;/code&gt; type-checks
+the cells one by one, in dependency order, with &lt;code&gt;go/types&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;the cells&amp;rsquo; text is kept as it is and edited in place: &lt;code&gt;:=&lt;/code&gt; becomes &lt;code&gt;= &lt;/code&gt;,
+&lt;code&gt;var x T&lt;/code&gt; becomes &lt;code&gt;x = *new(T)&lt;/code&gt; (so running the cell again resets it),
+constants move to package level, and the display value is wrapped in a call
+that shows it;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;//line nb.md:L:C&lt;/code&gt; directives point every line back into the notebook.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The kernel compiles this program into a &lt;strong&gt;worker process&lt;/strong&gt; and drives it
+through package &lt;a href="https://github.com/go-notebook/notebook/tree/main/runtime" target="_blank" rel="noopener"&gt;&lt;code&gt;runtime&lt;/code&gt;&lt;/a&gt;:
+one JSON request per line on the worker&amp;rsquo;s standard input (&lt;code&gt;run&lt;/code&gt;, &lt;code&gt;get&lt;/code&gt;, &lt;code&gt;set&lt;/code&gt;,
+&lt;code&gt;exit&lt;/code&gt;) and one reply per line on its standard output. What a cell prints goes
+to a pipe of its own, so it can never be mistaken for a reply.&lt;/p&gt;
+&lt;p&gt;Go&amp;rsquo;s build cache makes rebuilding after a one-cell edit cost about a tenth of a
+second.&lt;/p&gt;
+&lt;h2 data-hextra-search-id="a-cells-key"&gt;A cell&amp;rsquo;s key&lt;span class="hx:absolute hx:-mt-20" id="a-cells-key"&gt;&lt;/span&gt;
+&lt;a href="#a-cells-key" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;A cell&amp;rsquo;s &lt;strong&gt;key&lt;/strong&gt; is a hash of:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;its source;&lt;/li&gt;
+&lt;li&gt;the import paths of the packages it refers to;&lt;/li&gt;
+&lt;li&gt;the Go toolchain&amp;rsquo;s version;&lt;/li&gt;
+&lt;li&gt;the work module&amp;rsquo;s &lt;code&gt;go.sum&lt;/code&gt;, when the cell uses a package outside the
+standard library (any module could be behind such a package, transitively,
+so the whole &lt;code&gt;go.sum&lt;/code&gt; is the honest summary);&lt;/li&gt;
+&lt;li&gt;the keys of the cells it reads.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Its position is not part of the key, so &lt;strong&gt;moving cells runs nothing&lt;/strong&gt;; neither
+does an import another cell adds. &lt;strong&gt;Upgrading Go, or a dependency, runs again
+what it could change&lt;/strong&gt;, and only that: a cell using only the standard library
+is not run again by a &lt;code&gt;go.sum&lt;/code&gt; change. Because a key includes the keys of its
+inputs, a change propagates to exactly the cells downstream of it.&lt;/p&gt;
+&lt;h2 data-hextra-search-id="what-runs"&gt;What runs&lt;span class="hx:absolute hx:-mt-20" id="what-runs"&gt;&lt;/span&gt;
+&lt;a href="#what-runs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;A cell whose key…&lt;/th&gt;
+&lt;th&gt;…&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;did not change&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;keeps its result&lt;/strong&gt; and is not run&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;changed&lt;/td&gt;
+&lt;td&gt;runs, and so does every cell whose key changes because of it&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;did not change, but made a &lt;strong&gt;volatile&lt;/strong&gt; value that a running cell reads&lt;/td&gt;
+&lt;td&gt;runs again, to make that value (see below)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;reads a cell that failed&lt;/td&gt;
+&lt;td&gt;is &lt;strong&gt;not run&lt;/strong&gt;, and reports &lt;code&gt;not run: cell N failed&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;When the program changes, the worker is rebuilt and restarted. The variables
+made by unchanged cells are &lt;strong&gt;handed to the new worker&lt;/strong&gt; instead of being
+computed again.&lt;/p&gt;
+&lt;p&gt;A worker that dies (&lt;code&gt;os.Exit&lt;/code&gt;, a crash outside the recovered call) is restarted
+on the next run.&lt;/p&gt;
+&lt;h2 data-hextra-search-id="kept-values"&gt;Kept values&lt;span class="hx:absolute hx:-mt-20" id="kept-values"&gt;&lt;/span&gt;
+&lt;a href="#kept-values" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;To hand a value over, or to keep it on disk, the kernel encodes it:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;with its own &lt;code&gt;MarshalBinary&lt;/code&gt; when it has one;&lt;/li&gt;
+&lt;li&gt;with gob when every field it can hold is exported (gob would silently drop
+the others).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Anything else — a func, a channel, unexported state — is &lt;strong&gt;volatile&lt;/strong&gt;: its cell
+runs again, but only when a cell that reads it has to run.&lt;/p&gt;
+&lt;h2 data-hextra-search-id="on-disk"&gt;On disk&lt;span class="hx:absolute hx:-mt-20" id="on-disk"&gt;&lt;/span&gt;
+&lt;a href="#on-disk" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Results and values are kept in the &lt;strong&gt;work directory&lt;/strong&gt;, so a new kernel, or the
+next &lt;code&gt;notebook run&lt;/code&gt;, starts where the last one stopped. The
+&lt;a href="https://go-notebook.github.io/docs/main/cli/#the-work-directory"&gt;&lt;code&gt;notebook&lt;/code&gt; command&lt;/a&gt; gives each notebook its own
+work directory under the user&amp;rsquo;s cache directory.&lt;/p&gt;
+&lt;h2 data-hextra-search-id="the-assumption"&gt;The assumption&lt;span class="hx:absolute hx:-mt-20" id="the-assumption"&gt;&lt;/span&gt;
+&lt;a href="#the-assumption" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;All of this assumes &lt;strong&gt;a cell computes the same values from the same inputs&lt;/strong&gt;.
+A cell that reads the clock or an unseeded random generator does not; such a
+cell should be run explicitly — &lt;code&gt;Kernel.RunCell&lt;/code&gt; runs a cell again even if
+nothing changed, together with every cell that reads it.&lt;/p&gt;
+&lt;h2 data-hextra-search-id="using-the-kernel-from-go"&gt;Using the kernel from Go&lt;span class="hx:absolute hx:-mt-20" id="using-the-kernel-from-go"&gt;&lt;/span&gt;
+&lt;a href="#using-the-kernel-from-go" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nx"&gt;k&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;err&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;:=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;kernel&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;New&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;kernel&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Options&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nx"&gt;Dir&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;work&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;#34;analysis.md&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;})&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;err&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;!=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kc"&gt;nil&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;…&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;defer&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;k&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;Close&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nx"&gt;rep&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;err&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;:=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;k&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;Run&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;cells&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;// cells: []gen.Code{{Source: …, Line: …}, …}&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;_&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;r&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;:=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;range&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;rep&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Results&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;// r.Ran, r.Took, r.Output, r.Display, r.Error&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;code&gt;Report.Built&lt;/code&gt; says whether the worker was rebuilt, &lt;code&gt;Report.Build&lt;/code&gt; how long
+generating and building took, and &lt;code&gt;Report.Diags&lt;/code&gt; holds the static errors.&lt;/p&gt;</description></item></channel></rss>

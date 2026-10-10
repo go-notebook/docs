@@ -1,0 +1,54 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>go-notebook – Format</title><link>https://go-notebook.github.io/docs/main/tags/format/</link><description>Recent content in Format on go-notebook</description><generator>Hugo -- gohugo.io</generator><language>en</language><atom:link href="https://go-notebook.github.io/docs/main/tags/format/index.xml" rel="self" type="application/rss+xml"/><item><title>Notebooks</title><link>https://go-notebook.github.io/docs/main/notebooks/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://go-notebook.github.io/docs/main/notebooks/</guid><description>
+&lt;p&gt;A notebook is a Markdown file. Its fenced code blocks whose info string&amp;rsquo;s first
+word is &lt;code&gt;go&lt;/code&gt; are &lt;strong&gt;code cells&lt;/strong&gt;; everything between them is &lt;strong&gt;prose&lt;/strong&gt;, kept byte
+for byte.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-markdown" data-lang="markdown"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="gh"&gt;# Spectrum
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Some prose, with a list, a table, a link: any Markdown.
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;```go
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nx"&gt;x&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;:=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;40&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;```&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;```python
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# A block in another language is prose, not a cell.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;```&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2 data-hextra-search-id="fences"&gt;Fences&lt;span class="hx:absolute hx:-mt-20" id="fences"&gt;&lt;/span&gt;
+&lt;a href="#fences" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Fences follow &lt;a href="https://spec.commonmark.org/" target="_blank" rel="noopener"&gt;CommonMark&lt;/a&gt;: three or more
+backticks or tildes, indented by at most three spaces, closed by a fence of the
+same character at least as long. A code block in another language is prose.&lt;/p&gt;
+&lt;h2 data-hextra-search-id="nothing-is-written-back"&gt;Nothing is written back&lt;span class="hx:absolute hx:-mt-20" id="nothing-is-written-back"&gt;&lt;/span&gt;
+&lt;a href="#nothing-is-written-back" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;No output is ever stored in the file. Results live in the kernel&amp;rsquo;s value store
+(see &lt;a href="https://go-notebook.github.io/docs/main/kernel/"&gt;The kernel&lt;/a&gt;) and in exports such as the HTML page written by
+&lt;a href="https://go-notebook.github.io/docs/main/cli/#html"&gt;&lt;code&gt;notebook html&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Because of that:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;GitHub, and every Markdown viewer, shows a notebook as a document;&lt;/li&gt;
+&lt;li&gt;a diff of a notebook is a diff of text, with no execution counts or outputs;&lt;/li&gt;
+&lt;li&gt;reading and writing a notebook round-trips exactly:
+&lt;code&gt;format.Parse(src).String() == src&lt;/code&gt; for every input, and that property is
+fuzzed.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 data-hextra-search-id="why-not-a-valid-go-file"&gt;Why not a valid Go file&lt;span class="hx:absolute hx:-mt-20" id="why-not-a-valid-go-file"&gt;&lt;/span&gt;
+&lt;a href="#why-not-a-valid-go-file" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;A &lt;code&gt;.go&lt;/code&gt; file was considered first and rejected. Go allows no statements at the
+top level, and &lt;code&gt;x := load(path)&lt;/code&gt; or &lt;code&gt;fmt.Println(x)&lt;/code&gt; at the top level of a cell
+is most of what a notebook is. Wrapping every cell in a function costs the user
+more than editor support on the raw file gains. The kernel produces the valid
+Go program instead: see &lt;a href="https://go-notebook.github.io/docs/main/kernel/#the-generated-program"&gt;The kernel&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 data-hextra-search-id="the-packages"&gt;The packages&lt;span class="hx:absolute hx:-mt-20" id="the-packages"&gt;&lt;/span&gt;
+&lt;a href="#the-packages" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The Markdown is read and written by package
+&lt;a href="https://github.com/go-notebook/notebook/tree/main/format" target="_blank" rel="noopener"&gt;&lt;code&gt;format&lt;/code&gt;&lt;/a&gt;. Its
+&lt;code&gt;Parse&lt;/code&gt; returns a &lt;code&gt;Notebook&lt;/code&gt; whose &lt;code&gt;Cells&lt;/code&gt; are either code or prose, each with
+its line in the file.&lt;/p&gt;</description></item></channel></rss>
