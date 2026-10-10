@@ -52,10 +52,16 @@ A cell's **key** is a hash of:
 
 - its source;
 - the import paths of the packages it refers to;
+- the Go toolchain's version;
+- the work module's `go.sum`, when the cell uses a package outside the
+  standard library (any module could be behind such a package, transitively,
+  so the whole `go.sum` is the honest summary);
 - the keys of the cells it reads.
 
 Its position is not part of the key, so **moving cells runs nothing**; neither
-does an import another cell adds. Because a key includes the keys of its
+does an import another cell adds. **Upgrading Go, or a dependency, runs again
+what it could change**, and only that: a cell using only the standard library
+is not run again by a `go.sum` change. Because a key includes the keys of its
 inputs, a change propagates to exactly the cells downstream of it.
 
 ## What runs
@@ -98,10 +104,6 @@ All of this assumes **a cell computes the same values from the same inputs**.
 A cell that reads the clock or an unseeded random generator does not; such a
 cell should be run explicitly — `Kernel.RunCell` runs a cell again even if
 nothing changed, together with every cell that reads it.
-
-The key does not yet include module versions: a `go get -u` does not invalidate
-results. [go-notebook/notebook#3](https://github.com/go-notebook/notebook/pull/3)
-adds the Go toolchain version and the work module's `go.sum` to the key.
 
 ## Using the kernel from Go
 
