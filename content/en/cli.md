@@ -105,8 +105,14 @@ The served page is the `html` page plus the small script that reloads it.
 | `-interval` | `300ms` | `watch`, `serve` | how often the file is looked at |
 | `-work` | under the user cache directory | all | the [work directory](kernel.md#on-disk) |
 | `-runtime-src` | | all | use the go-notebook source tree at this path instead of a released runtime |
+| `-timeout` | `0` (no limit) | all | stop a cell, in Go or in Ruby, that runs longer than this (`30s`, `2m`): its worker is killed, the cell fails, and the next run starts a new worker |
+| `-memory` | `0` (no limit) | all | stop a cell whose worker's Go heap holds more than this many MiB: the garbage collector keeps under it as long as it can, then the worker is stopped and the cell fails |
 
 Flags go between the verb and the notebook: `notebook html -o out.html nb.md`.
+
+`NOTEBOOK_REPLACE=module=dir,module=dir` points modules of the work module at
+local checkouts, to run a notebook against a library being changed (for example
+`github.com/go-scikit/ruby=../ruby` for the Ruby bindings).
 
 ## The work directory
 
