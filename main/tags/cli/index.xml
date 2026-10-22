@@ -203,9 +203,24 @@ fetched) is shown as an &lt;strong&gt;error page&lt;/strong&gt; instead of a sta
 &lt;td&gt;all&lt;/td&gt;
 &lt;td&gt;use the go-notebook source tree at this path instead of a released runtime&lt;/td&gt;
 &lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;-timeout&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;0&lt;/code&gt; (no limit)&lt;/td&gt;
+&lt;td&gt;all&lt;/td&gt;
+&lt;td&gt;stop a cell, in Go or in Ruby, that runs longer than this (&lt;code&gt;30s&lt;/code&gt;, &lt;code&gt;2m&lt;/code&gt;): its worker is killed, the cell fails, and the next run starts a new worker&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;-memory&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;0&lt;/code&gt; (no limit)&lt;/td&gt;
+&lt;td&gt;all&lt;/td&gt;
+&lt;td&gt;stop a cell whose worker&amp;rsquo;s Go heap holds more than this many MiB: the garbage collector keeps under it as long as it can, then the worker is stopped and the cell fails&lt;/td&gt;
+&lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;p&gt;Flags go between the verb and the notebook: &lt;code&gt;notebook html -o out.html nb.md&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;NOTEBOOK_REPLACE=module=dir,module=dir&lt;/code&gt; points modules of the work module at
+local checkouts, to run a notebook against a library being changed (for example
+&lt;code&gt;github.com/go-scikit/ruby=../ruby&lt;/code&gt; for the Ruby bindings).&lt;/p&gt;
 &lt;h2 data-hextra-search-id="the-work-directory"&gt;The work directory&lt;span class="hx:absolute hx:-mt-20" id="the-work-directory"&gt;&lt;/span&gt;
 &lt;a href="#the-work-directory" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;By default each notebook has its own work directory under the user&amp;rsquo;s cache
 directory (&lt;code&gt;go-notebook/&amp;lt;hash of the notebook's absolute path&amp;gt;&lt;/code&gt;), so a second

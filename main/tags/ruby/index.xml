@@ -1,0 +1,270 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>go-notebook – Ruby</title><link>https://go-notebook.github.io/docs/main/tags/ruby/</link><description>Recent content in Ruby on go-notebook</description><generator>Hugo -- gohugo.io</generator><language>en</language><atom:link href="https://go-notebook.github.io/docs/main/tags/ruby/index.xml" rel="self" type="application/rss+xml"/><item><title>Ruby cells</title><link>https://go-notebook.github.io/docs/main/ruby/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://go-notebook.github.io/docs/main/ruby/</guid><description>
+&lt;p&gt;A &lt;code&gt;```ruby&lt;/code&gt; block is a Ruby cell (go-notebook v0.3.0 and later). The Ruby is
+&lt;a href="https://github.com/go-embedded-ruby/ruby" target="_blank" rel="noopener"&gt;rbgo&lt;/a&gt;, a Ruby bytecode VM written
+in Go, with the &lt;a href="https://github.com/go-scikit/ruby" target="_blank" rel="noopener"&gt;go-scikit bindings&lt;/a&gt;
+registered over the same Go libraries a Go cell imports:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Ruby&lt;/th&gt;
+&lt;th&gt;Go library&lt;/th&gt;
+&lt;th&gt;Counterpart&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;Stats&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://github.com/go-statistics/stats" target="_blank" rel="noopener"&gt;go-statistics/stats&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;scipy.stats&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;Special&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://github.com/go-numerics/special" target="_blank" rel="noopener"&gt;go-numerics/special&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;scipy.special&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;Optimize&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://github.com/go-numerics/optimize" target="_blank" rel="noopener"&gt;go-numerics/optimize&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;scipy.optimize&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;Integrate&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://github.com/go-numerics/integrate" target="_blank" rel="noopener"&gt;go-numerics/integrate&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;scipy.integrate&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;DataFrame&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://github.com/go-dataframe/dataframe" target="_blank" rel="noopener"&gt;go-dataframe/dataframe&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;pandas&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;Plot&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://github.com/go-plot/plot" target="_blank" rel="noopener"&gt;go-plot/plot&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;matplotlib.pyplot&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;NDArray&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://github.com/go-ndarray/ndarray" target="_blank" rel="noopener"&gt;go-ndarray/ndarray&lt;/a&gt; (rbgo&amp;rsquo;s own)&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;numpy.ndarray&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Every binding calls the Go function it is named after; the bindings&amp;rsquo; README
+lists every name.&lt;/p&gt;
+&lt;p&gt;The kernel adds &lt;code&gt;github.com/go-scikit/ruby&lt;/code&gt; to the notebook&amp;rsquo;s work module by
+itself, and builds the worker with &lt;code&gt;-tags rbgo_core&lt;/code&gt; (the Ruby language and its
+numeric stack, without gems). A notebook needs nothing more than go-notebook.&lt;/p&gt;
+&lt;h2 data-hextra-search-id="a-mixed-notebook"&gt;A mixed notebook&lt;span class="hx:absolute hx:-mt-20" id="a-mixed-notebook"&gt;&lt;/span&gt;
+&lt;a href="#a-mixed-notebook" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;A Go cell makes the data, a Ruby cell fits it with a go-scikit binding, and a
+Go cell reads the fit back (the file&amp;rsquo;s prose is left out here):&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-markdown" data-lang="markdown"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;```go
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nx"&gt;xs&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;:=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;[]&lt;/span&gt;&lt;span class="kt"&gt;float64&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mf"&gt;2.1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mf"&gt;3.4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mf"&gt;1.9&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mf"&gt;5.6&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mf"&gt;4.4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mf"&gt;3.3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mf"&gt;2.8&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mf"&gt;4.9&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;```&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;```ruby
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;fit&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Stats&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Normal&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;xs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;loc&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;scale&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;fit&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;loc&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;fit&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;scale&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;ks&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Stats&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ks_1samp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;xs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;fit&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cdf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;pvalue&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;ks&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pvalue&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;fit&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;```&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;```go
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kn"&gt;import&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;#34;fmt&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nx"&gt;fmt&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;Printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#34;loc %.4f, scale %.4f, KS p-value %.4f\n&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;loc&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;scale&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;pvalue&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;```&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;In a module whose &lt;code&gt;go.mod&lt;/code&gt; has &lt;code&gt;tool github.com/go-notebook/notebook/cmd/notebook&lt;/code&gt;
+and requires &lt;code&gt;github.com/go-notebook/notebook v0.3.0&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-console" data-lang="console"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="gp"&gt;$&lt;/span&gt; go tool notebook run first.md
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;── cell 0 (line 6, ran in 0s)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;── cell 1 (line 13, ran in 366µs)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt; #&amp;lt;Stats::Normal loc=3.55, scale=1.2359207094308275&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;── cell 2 (line 23, ran in 3µs)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt; loc 3.5500, scale 1.2359, KS p-value 0.9381
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;In the Ruby cell &lt;code&gt;xs&lt;/code&gt; is an Array of Floats; in the last Go cell &lt;code&gt;loc&lt;/code&gt;,
+&lt;code&gt;scale&lt;/code&gt; and &lt;code&gt;pvalue&lt;/code&gt; are &lt;code&gt;float64&lt;/code&gt;s. (A real transcript, from go-notebook
+v0.3.0 with go-scikit/ruby v0.1.0; the line numbers are those of the full
+file.) A larger example, with an NDArray and a plot, is
+&lt;a href="https://github.com/go-notebook/notebook/blob/main/examples/mixed.md" target="_blank" rel="noopener"&gt;examples/mixed.md&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 data-hextra-search-id="the-rules"&gt;The rules&lt;span class="hx:absolute hx:-mt-20" id="the-rules"&gt;&lt;/span&gt;
+&lt;a href="#the-rules" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Ruby cells follow the &lt;a href="https://go-notebook.github.io/docs/main/cells/"&gt;rules of Go cells&lt;/a&gt;: one definition per name,
+no assignment to another cell&amp;rsquo;s variable, and a name starting with &lt;code&gt;_&lt;/code&gt; stays
+in its cell. The names come from rbgo&amp;rsquo;s own parser: a cell defines the locals
+it assigns at its top level, and the methods, constants, classes and modules
+it defines there; it uses the names it reads before assigning them.&lt;/p&gt;
+&lt;p&gt;The Ruby cells share one interpreter, so their top-level locals persist from
+cell to cell. Dependencies, caching and re-runs work across the two languages
+as for Go alone: a Ruby cell runs again only when it, or a cell it reads,
+changed.&lt;/p&gt;
+&lt;p&gt;A cell that ends in an expression shows its value: a &lt;code&gt;Plot&lt;/code&gt; figure as SVG,
+anything else as its &lt;code&gt;inspect&lt;/code&gt; (an NDArray in NumPy&amp;rsquo;s form). An exception
+fails the cell with &lt;code&gt;file:line: message (Class)&lt;/code&gt; at the notebook&amp;rsquo;s line,
+followed by the backtrace frames in the notebook (twelve at most).&lt;/p&gt;
+&lt;h2 data-hextra-search-id="how-values-cross-between-go-and-ruby"&gt;How values cross between Go and Ruby&lt;span class="hx:absolute hx:-mt-20" id="how-values-cross-between-go-and-ruby"&gt;&lt;/span&gt;
+&lt;a href="#how-values-cross-between-go-and-ruby" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Only variables cross.&lt;/strong&gt; A Go cell sees a Ruby cell&amp;rsquo;s top-level locals, not
+its methods, constants or classes, nor a local named like a Go keyword or
+predeclared identifier (&lt;code&gt;len&lt;/code&gt;, &lt;code&gt;type&lt;/code&gt;, &lt;code&gt;int&lt;/code&gt;). A Ruby cell sees a Go cell&amp;rsquo;s
+variables, not its funcs or types.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Go to Ruby.&lt;/strong&gt; Before a Ruby cell runs, each Go variable it reads becomes a
+Ruby local of the same name (a constant when the name starts with an
+upper-case letter):&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;numbers, strings and booleans as such;&lt;/li&gt;
+&lt;li&gt;slices as Arrays, maps as Hashes;&lt;/li&gt;
+&lt;li&gt;an &lt;code&gt;*ndarray.Array&lt;/code&gt; as the NDArray itself, not a copy;&lt;/li&gt;
+&lt;li&gt;any other value (a &lt;code&gt;*plot.Figure&lt;/code&gt;, a struct) as an object that comes back to
+Go as itself.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Ruby to Go.&lt;/strong&gt; After a Ruby cell runs, each local it assigns becomes a Go
+variable whose type is the type of its value:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Ruby value&lt;/th&gt;
+&lt;th&gt;Go type&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;nil&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;any&lt;/code&gt; (nil)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;true, false&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;bool&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Integer&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;int64&lt;/code&gt; (&lt;code&gt;*big.Int&lt;/code&gt; when it does not fit)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Float&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;float64&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;String&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;string&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Symbol&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;ruby.Symbol&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Complex&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;complex128&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Rational&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;*big.Rat&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;NDArray&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;*ndarray.Array&lt;/code&gt;, the same array&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Array of all Floats, all Integers, all Strings, all booleans&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;[]float64&lt;/code&gt;, &lt;code&gt;[]int64&lt;/code&gt;, &lt;code&gt;[]string&lt;/code&gt;, &lt;code&gt;[]bool&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;any other Array&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;[]any&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Hash with String keys&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;map[string]any&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Hash with Symbol keys&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;map[ruby.Symbol]any&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;any other Hash&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;map[any]any&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;a go-scikit object&lt;/td&gt;
+&lt;td&gt;the Go value it wraps: &lt;code&gt;*plot.Figure&lt;/code&gt;, &lt;code&gt;stats.TTestResult&lt;/code&gt;, &lt;code&gt;*optimize.Result&lt;/code&gt;, …&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;any other Ruby object&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;ruby.Value&lt;/code&gt;, which a Go cell can &lt;code&gt;Call&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;The type comes from the value, so it is known once the Ruby cell has run. A Go
+cell that reads a Ruby variable whose type is not known yet waits: the Ruby
+cell runs, then the Go cell is compiled with the type and runs, in the same
+run. When a later edit changes the type, only the Go cells that read the
+variable are compiled again.&lt;/p&gt;
+&lt;h2 data-hextra-search-id="limits"&gt;Limits&lt;span class="hx:absolute hx:-mt-20" id="limits"&gt;&lt;/span&gt;
+&lt;a href="#limits" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;A notebook is a program, and it runs with your rights. A Ruby cell can reach
+what a Go cell can: files through &lt;code&gt;File&lt;/code&gt;, &lt;code&gt;IO&lt;/code&gt; and &lt;code&gt;Dir&lt;/code&gt;, other processes
+through &lt;code&gt;Process&lt;/code&gt;, the environment through &lt;code&gt;ENV&lt;/code&gt;, and the bindings that write
+files (&lt;code&gt;DataFrame#write_csv&lt;/code&gt;, &lt;code&gt;Plot::Figure#save_svg&lt;/code&gt;). The &lt;code&gt;rbgo_core&lt;/code&gt; build
+leaves out the network libraries (&lt;code&gt;socket&lt;/code&gt;, &lt;code&gt;net/*&lt;/code&gt;, &lt;code&gt;openssl&lt;/code&gt;): requiring one
+raises &lt;code&gt;LoadError&lt;/code&gt;. Run only notebooks you trust.&lt;/p&gt;
+&lt;p&gt;Every cell runs in the worker, a process of its own, so the kernel survives
+whatever a cell does:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;What the cell does&lt;/th&gt;
+&lt;th&gt;What happens&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;runs too long&lt;/td&gt;
+&lt;td&gt;with &lt;code&gt;-timeout 30s&lt;/code&gt;, its worker is killed and the cell fails with &amp;ldquo;stopped: the cell ran longer than 30s&amp;rdquo;; the next run starts a new worker&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;holds too much memory&lt;/td&gt;
+&lt;td&gt;with &lt;code&gt;-memory 512&lt;/code&gt; (MiB), the garbage collector keeps under the limit as long as it can, then the worker is stopped and the cell fails with &amp;ldquo;stopped: the cell went over its memory limit&amp;rdquo;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;recurses without end&lt;/td&gt;
+&lt;td&gt;Ruby raises &lt;code&gt;SystemStackError&lt;/code&gt;, shown with twelve frames&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;asks for an impossible allocation (&lt;code&gt;'x' * 2**62&lt;/code&gt;)&lt;/td&gt;
+&lt;td&gt;Ruby raises &lt;code&gt;NoMemoryError&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;calls &lt;code&gt;exit&lt;/code&gt; or &lt;code&gt;exit!&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;a &lt;code&gt;SystemExit&lt;/code&gt; fails the cell; the worker lives on&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;kills its own process (&lt;code&gt;Process.kill&lt;/code&gt;, not on Windows; &lt;code&gt;os.Exit&lt;/code&gt; in Go)&lt;/td&gt;
+&lt;td&gt;the cell says so, and the next run restarts the worker&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Both limits apply to Go and Ruby cells alike and are off by default. The
+memory limit counts the Go heap, sampled every 20 ms; memory held outside it
+(a large stack, a mapped file) is bounded only by the operating system.&lt;/p&gt;</description></item></channel></rss>
