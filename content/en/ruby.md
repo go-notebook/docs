@@ -147,8 +147,8 @@ whatever a cell does:
 
 | What the cell does | What happens |
 | --- | --- |
-| runs too long | with `-timeout 30s`, its worker is killed and the cell fails with "stopped: the cell ran longer than 30s"; the next run starts a new worker |
-| holds too much memory | with `-memory 512` (MiB), the garbage collector keeps under the limit as long as it can, then the worker is stopped and the cell fails with "stopped: the cell went over its memory limit" |
+| runs too long | with `--timeout 30s`, its worker is killed and the cell fails with "stopped: the cell ran longer than 30s"; the next run starts a new worker |
+| holds too much memory | with `--memory 512` (MiB), the garbage collector keeps under the limit as long as it can, then the worker is stopped and the cell fails with "stopped: the cell went over its memory limit" |
 | recurses without end | Ruby raises `SystemStackError`, shown with twelve frames |
 | asks for an impossible allocation (`'x' * 2**62`) | Ruby raises `NoMemoryError` |
 | calls `exit` or `exit!` | a `SystemExit` fails the cell; the worker lives on |
@@ -157,3 +157,15 @@ whatever a cell does:
 Both limits apply to Go and Ruby cells alike and are off by default. The
 memory limit counts the Go heap, sampled every 20 ms; memory held outside it
 (a large stack, a mapped file) is bounded only by the operating system.
+
+## In the browser
+
+The [playground](https://github.com/go-notebook/playground) runs Ruby cells
+too, with no server: the same rbgo and go-scikit bindings, compiled to
+WebAssembly. The page fetches the Ruby core (`playground-ruby.wasm`) only when
+the open notebook has a Ruby cell, so a visitor who runs only Go never
+downloads it. The Ruby there has no bridge to the page's JavaScript and no file
+system, and every figure a cell shows goes through an allowlist SVG sanitizer
+before it reaches the page. Try the Ruby examples on
+[go-statistics](https://go-statistics.github.io/playground/#5-ruby) and
+[go-numerics](https://go-numerics.github.io/playground/#6-ruby).
