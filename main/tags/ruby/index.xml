@@ -241,11 +241,11 @@ whatever a cell does:&lt;/p&gt;
 &lt;tbody&gt;
 &lt;tr&gt;
 &lt;td&gt;runs too long&lt;/td&gt;
-&lt;td&gt;with &lt;code&gt;-timeout 30s&lt;/code&gt;, its worker is killed and the cell fails with &amp;ldquo;stopped: the cell ran longer than 30s&amp;rdquo;; the next run starts a new worker&lt;/td&gt;
+&lt;td&gt;with &lt;code&gt;--timeout 30s&lt;/code&gt;, its worker is killed and the cell fails with &amp;ldquo;stopped: the cell ran longer than 30s&amp;rdquo;; the next run starts a new worker&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;holds too much memory&lt;/td&gt;
-&lt;td&gt;with &lt;code&gt;-memory 512&lt;/code&gt; (MiB), the garbage collector keeps under the limit as long as it can, then the worker is stopped and the cell fails with &amp;ldquo;stopped: the cell went over its memory limit&amp;rdquo;&lt;/td&gt;
+&lt;td&gt;with &lt;code&gt;--memory 512&lt;/code&gt; (MiB), the garbage collector keeps under the limit as long as it can, then the worker is stopped and the cell fails with &amp;ldquo;stopped: the cell went over its memory limit&amp;rdquo;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;recurses without end&lt;/td&gt;
@@ -267,4 +267,14 @@ whatever a cell does:&lt;/p&gt;
 &lt;/table&gt;
 &lt;p&gt;Both limits apply to Go and Ruby cells alike and are off by default. The
 memory limit counts the Go heap, sampled every 20 ms; memory held outside it
-(a large stack, a mapped file) is bounded only by the operating system.&lt;/p&gt;</description></item></channel></rss>
+(a large stack, a mapped file) is bounded only by the operating system.&lt;/p&gt;
+&lt;h2 data-hextra-search-id="in-the-browser"&gt;In the browser&lt;span class="hx:absolute hx:-mt-20" id="in-the-browser"&gt;&lt;/span&gt;
+&lt;a href="#in-the-browser" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The &lt;a href="https://github.com/go-notebook/playground" target="_blank" rel="noopener"&gt;playground&lt;/a&gt; runs Ruby cells
+too, with no server: the same rbgo and go-scikit bindings, compiled to
+WebAssembly. The page fetches the Ruby core (&lt;code&gt;playground-ruby.wasm&lt;/code&gt;) only when
+the open notebook has a Ruby cell, so a visitor who runs only Go never
+downloads it. The Ruby there has no bridge to the page&amp;rsquo;s JavaScript and no file
+system, and every figure a cell shows goes through an allowlist SVG sanitizer
+before it reaches the page. Try the Ruby examples on
+&lt;a href="https://go-statistics.github.io/playground/#5-ruby" target="_blank" rel="noopener"&gt;go-statistics&lt;/a&gt; and
+&lt;a href="https://go-numerics.github.io/playground/#6-ruby" target="_blank" rel="noopener"&gt;go-numerics&lt;/a&gt;.&lt;/p&gt;</description></item></channel></rss>
