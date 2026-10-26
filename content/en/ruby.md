@@ -27,6 +27,9 @@ The kernel adds `github.com/go-scikit/ruby` to the notebook's work module by
 itself, and builds the worker with `-tags rbgo_core` (the Ruby language and its
 numeric stack, without gems). A notebook needs nothing more than go-notebook.
 
+To try the same Ruby line by line, as irb, without a notebook file, run
+[`notebook irb`](irb.md).
+
 ## A mixed notebook
 
 A Go cell makes the data, a Ruby cell fits it with a go-scikit binding, and a

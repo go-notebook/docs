@@ -81,7 +81,8 @@ is not summed again. (A real transcript, from `notebook` built at main
 | [Notebooks](notebooks.md) | what a notebook file is, and why it is Markdown |
 | [Cells](cells.md) | the rules a cell follows, and the errors that enforce them |
 | [Ruby cells](ruby.md) | Ruby cells with the go-scikit bindings, how values cross between Go and Ruby, and the limits |
-| [The notebook command](cli.md) | `run`, `html`, `watch` and `serve`, and their flags |
+| [irb](irb.md) | `notebook irb`: an interactive Ruby session on the same Ruby and bindings, as irb |
+| [The notebook command](cli.md) | `run`, `html`, `watch`, `serve` and `irb`, and their flags |
 | [The kernel](kernel.md) | how the kernel decides what to run, and what it keeps |
 | [Design](design.md) | what exists already, what each gets wrong, and the decisions behind go-notebook |
 

@@ -2,7 +2,7 @@
 title: "The notebook command"
 linkTitle: "Command"
 weight: 30
-description: "notebook run, html, watch and serve: run a notebook, write its page, follow its edits."
+description: "notebook run, html, watch and serve: run a notebook, write its page, follow its edits; notebook irb: an interactive Ruby session."
 tags: [cli]
 ---
 
@@ -18,6 +18,7 @@ Available Commands:
   completion  Generate the autocompletion script for the specified shell
   help        Help about any command
   html        Run the notebook and write its results as a page next to it (or --output)
+  irb         Start an interactive Ruby session, as irb, on the notebook's Ruby and bindings
   run         Run the notebook and print each cell's results
   serve       Run the notebook again every time it changes, showing it live in a browser
   watch       Run the notebook again every time it changes, keeping its page current
@@ -103,6 +104,22 @@ serving spectrum.md at http://127.0.0.1:8888/
 
 The served page is the `html` page plus the small script that reloads it.
 
+## irb
+
+```sh
+notebook irb
+notebook irb --timeout 30s --memory 2048 --save session.md --svg-dir figures
+notebook irb < script.rb
+```
+
+An interactive Ruby session, as `irb`, on the Ruby of [Ruby cells](ruby.md)
+(rbgo with the go-scikit bindings), with no notebook file (v0.5.0 and later):
+`=> inspect` after each input, `_` the last value, exceptions shown without
+ending the session, reassignment allowed, multi-line input, a line editor with
+history and Tab completion. Each input runs in a worker process, to which
+`--timeout` and `--memory` apply; `--save` writes the session as a notebook
+that `notebook run` runs. [The irb page](irb.md) has the details.
+
 ## Flags
 
 | Flag | Default | Verbs | Meaning |
@@ -112,8 +129,12 @@ The served page is the `html` page plus the small script that reloads it.
 | `--interval` | `300ms` | `watch`, `serve` | how often the file is looked at (must be positive) |
 | `-w`, `--work` | under the user cache directory | all | the [work directory](kernel.md#on-disk) |
 | `--runtime-src` | | all | use the go-notebook source tree at this path instead of a released runtime |
-| `-t`, `--timeout` | `0` (no limit) | all | stop a cell, in Go or in Ruby, that runs longer than this (`30s`, `2m`): its worker is killed, the cell fails, and the next run starts a new worker |
-| `-m`, `--memory` | `0` (no limit) | all | stop a cell whose worker's Go heap holds more than this many MiB: the garbage collector keeps under it as long as it can, then the worker is stopped and the cell fails |
+| `-t`, `--timeout` | `0` (no limit) | all | stop a cell, in Go or in Ruby, that runs longer than this (`30s`, `2m`): its worker is killed, the cell fails, and the next run starts a new worker; for `irb`, an input |
+| `-m`, `--memory` | `0` (no limit) | all | stop a cell whose worker's Go heap holds more than this many MiB: the garbage collector keeps under it as long as it can, then the worker is stopped and the cell fails; for `irb`, an input |
+| `-s`, `--save` | | `irb` | write the session, at its end, as a notebook of Ruby cells |
+| `--svg-dir` | | `irb` | save each figure an input shows as an SVG file in this directory |
+| `--history` | `go-notebook/irb_history` under the user config directory | `irb` | the history file (mode 0600, the inputs only) |
+| `--history-size` | `1000` | `irb` | how many inputs the history keeps; `0`: no history file |
 
 Flags are POSIX (since v0.4.0): a long name takes two dashes, a one-letter
 shorthand one (`notebook html -o out.html nb.md`,
