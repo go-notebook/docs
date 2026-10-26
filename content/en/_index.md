@@ -18,6 +18,10 @@ description: "Go notebooks with native speed, kept values and a reproducible ord
   That holds across rebuilds and across runs: results and values are kept on
   disk.
 
+To try one without installing anything, open the
+[playground](https://go-notebook.github.io/playground/): notebooks with Go and
+Ruby cells, run in WebAssembly in the browser, with no server.
+
 ## Install
 
 ```sh
