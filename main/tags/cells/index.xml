@@ -435,5 +435,6 @@ the open notebook has a Ruby cell, so a visitor who runs only Go never
 downloads it. The Ruby there has no bridge to the page&amp;rsquo;s JavaScript and no file
 system, and every figure a cell shows goes through an allowlist SVG sanitizer
 before it reaches the page. Try the Ruby examples on
+&lt;a href="https://go-notebook.github.io/playground/#3-ruby" target="_blank" rel="noopener"&gt;go-notebook&amp;rsquo;s own playground&lt;/a&gt;,
 &lt;a href="https://go-statistics.github.io/playground/#5-ruby" target="_blank" rel="noopener"&gt;go-statistics&lt;/a&gt; and
 &lt;a href="https://go-numerics.github.io/playground/#6-ruby" target="_blank" rel="noopener"&gt;go-numerics&lt;/a&gt;.&lt;/p&gt;</description></item></channel></rss>
