@@ -1,4 +1,295 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>go-notebook – Cli</title><link>https://go-notebook.github.io/docs/main/tags/cli/</link><description>Recent content in Cli on go-notebook</description><generator>Hugo -- gohugo.io</generator><language>en</language><atom:link href="https://go-notebook.github.io/docs/main/tags/cli/index.xml" rel="self" type="application/rss+xml"/><item><title>The notebook command</title><link>https://go-notebook.github.io/docs/main/cli/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://go-notebook.github.io/docs/main/cli/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>go-notebook – Cli</title><link>https://go-notebook.github.io/docs/main/tags/cli/</link><description>Recent content in Cli on go-notebook</description><generator>Hugo -- gohugo.io</generator><language>en</language><atom:link href="https://go-notebook.github.io/docs/main/tags/cli/index.xml" rel="self" type="application/rss+xml"/><item><title>An interactive session: notebook irb</title><link>https://go-notebook.github.io/docs/main/irb/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://go-notebook.github.io/docs/main/irb/</guid><description>
+&lt;p&gt;&lt;code&gt;notebook irb&lt;/code&gt; (go-notebook v0.5.0 and later) is an interactive Ruby session,
+as Ruby&amp;rsquo;s &lt;code&gt;irb&lt;/code&gt;, on the Ruby that runs &lt;a href="https://go-notebook.github.io/docs/main/ruby/"&gt;Ruby cells&lt;/a&gt;:
+&lt;a href="https://github.com/go-embedded-ruby/ruby" target="_blank" rel="noopener"&gt;rbgo&lt;/a&gt; with the
+&lt;a href="https://github.com/go-scikit/ruby" target="_blank" rel="noopener"&gt;go-scikit bindings&lt;/a&gt; — &lt;code&gt;Stats&lt;/code&gt;, &lt;code&gt;Special&lt;/code&gt;,
+&lt;code&gt;Optimize&lt;/code&gt;, &lt;code&gt;Integrate&lt;/code&gt;, &lt;code&gt;DataFrame&lt;/code&gt;, &lt;code&gt;Plot&lt;/code&gt; and &lt;code&gt;NDArray&lt;/code&gt;. There is no
+notebook file: inputs are typed, evaluated and shown one at a time.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-console" data-lang="console"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="gp"&gt;$&lt;/span&gt; notebook irb
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;irb(main):001&amp;gt; x = [2.1, 3.4, 1.9, 5.6]
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;=&amp;gt; [2.1, 3.4, 1.9, 5.6]
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;irb(main):002&amp;gt; fit = Stats::Normal.fit(x)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;=&amp;gt; #&amp;lt;Stats::Normal loc=3.25, scale=1.4739402972983673&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;irb(main):003&amp;gt; fit.loc
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;=&amp;gt; 3.25
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;irb(main):004&amp;gt; _ * 2
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;=&amp;gt; 6.5
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;irb(main):005&amp;gt; def sq(v)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;irb(main):006* v * v
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;irb(main):007* end
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;=&amp;gt; :sq
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;irb(main):008&amp;gt; sq(3)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;=&amp;gt; 9
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;irb(main):009&amp;gt; x = x.sum
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;=&amp;gt; 13.0
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;irb(main):010&amp;gt; raise &amp;#34;boom&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;boom (RuntimeError)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt; from (irb):10:in &amp;#39;&amp;lt;main&amp;gt;&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;irb(main):011&amp;gt; s = &amp;#34;multi
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;irb(main):012&amp;#34; line string&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;=&amp;gt; &amp;#34;multi\nline string&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;irb(main):013&amp;gt; exit
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;(A real transcript, from &lt;code&gt;notebook irb &amp;lt; session.rb&lt;/code&gt;: when standard input is
+not a terminal, each line is echoed after its prompt.)&lt;/p&gt;
+&lt;p&gt;The first session builds the worker program, once (&lt;code&gt;building the Ruby worker&lt;/code&gt;;
+it fetches and compiles rbgo the first time); later sessions start at once. It
+needs the Go toolchain, as &lt;code&gt;notebook run&lt;/code&gt; does.&lt;/p&gt;
+&lt;h2 data-hextra-search-id="what-it-does-as-irb-does"&gt;What it does as irb does&lt;span class="hx:absolute hx:-mt-20" id="what-it-does-as-irb-does"&gt;&lt;/span&gt;
+&lt;a href="#what-it-does-as-irb-does" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Results&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;=&amp;gt; &lt;/code&gt; and the value&amp;rsquo;s &lt;code&gt;inspect&lt;/code&gt; after each input; &lt;code&gt;_&lt;/code&gt; is the last value&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Exceptions&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;message (Class)&lt;/code&gt; and the frames in the session (twelve at most); the session goes on, and &lt;code&gt;_&lt;/code&gt; keeps the last value that was not one&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Reassignment&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;any local may be assigned again: there is no dependency graph here, unlike in a notebook&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Multi-line input&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;an input that is not finished — an open &lt;code&gt;def&lt;/code&gt;, &lt;code&gt;do&lt;/code&gt;, bracket, string, heredoc, or a line ending in an operator or &lt;code&gt;\&lt;/code&gt; — continues on the next line, under irb&amp;rsquo;s continuation prompt (&lt;code&gt;*&lt;/code&gt;, or the quote of an open string)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Ending&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;exit&lt;/code&gt;, &lt;code&gt;quit&lt;/code&gt;, &lt;code&gt;exit!&lt;/code&gt; or Ctrl-D; Ruby&amp;rsquo;s &lt;code&gt;exit&lt;/code&gt; inside an input ends it too&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Ctrl-C&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;abandons the line being typed; during an input, stops it (see below)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Whether an input is finished is decided by rbgo&amp;rsquo;s own parser
+(&lt;a href="https://github.com/go-ruby-parser/parser" target="_blank" rel="noopener"&gt;go-ruby-parser&lt;/a&gt;): an input it finds
+ending in the middle of a construct continues. Where the parser accepts an
+unterminated literal as it is (a string, a heredoc, a regexp, &lt;code&gt;=begin&lt;/code&gt;), the
+port of IRB&amp;rsquo;s lexer in &lt;a href="https://github.com/go-ruby-irb/irb" target="_blank" rel="noopener"&gt;go-ruby-irb&lt;/a&gt; says
+it is open. Any other syntax error is evaluated, for Ruby to report.&lt;/p&gt;
+&lt;h2 data-hextra-search-id="the-line-editor"&gt;The line editor&lt;span class="hx:absolute hx:-mt-20" id="the-line-editor"&gt;&lt;/span&gt;
+&lt;a href="#the-line-editor" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;On a terminal, lines are edited with
+&lt;a href="https://github.com/go-ruby-reline/reline" target="_blank" rel="noopener"&gt;go-ruby-reline&lt;/a&gt;, a pure-Go port of
+Ruby&amp;rsquo;s Reline, through its &lt;code&gt;terminal&lt;/code&gt; package — on Linux, macOS and Windows 10
+and later:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;emacs keys (Ctrl-A/E/K/U/W/Y, Alt-F/B, …), the arrow, Home, End and Delete
+keys, undo;&lt;/li&gt;
+&lt;li&gt;history with Up and Down, and Ctrl-R to search it; a multi-line input comes
+back whole;&lt;/li&gt;
+&lt;li&gt;bracketed paste: a pasted block is inserted as it is, newlines included;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Tab completion&lt;/strong&gt; of locals, methods of &lt;code&gt;main&lt;/code&gt;, keywords, constants and the
+bindings (&lt;code&gt;St&lt;/code&gt; → &lt;code&gt;Stats&lt;/code&gt;, &lt;code&gt;Stats::Nor&lt;/code&gt; → &lt;code&gt;Stats::Normal&lt;/code&gt;), and of the methods
+of a variable&amp;rsquo;s value or a constant path&amp;rsquo;s (&lt;code&gt;x.so&lt;/code&gt; → &lt;code&gt;x.sort&lt;/code&gt;,
+&lt;code&gt;Stats::Normal.fi&lt;/code&gt; → &lt;code&gt;Stats::Normal.fit&lt;/code&gt;), as IRB&amp;rsquo;s default completor does. A
+word is completed by asking the worker about the names it holds: completion
+never evaluates an expression the word contains (&lt;code&gt;xs.first.ti&lt;/code&gt; completes to
+nothing), so pressing Tab runs none of your code. A completion that takes
+more than five seconds (a &lt;code&gt;methods&lt;/code&gt; method that does not return) stops the
+worker, and the next input says so.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;When standard input is not a terminal, lines are read as they come, with no
+editing, and echoed after their prompt, so &lt;code&gt;notebook irb &amp;lt; script.rb&lt;/code&gt; prints a
+transcript and a session can be scripted and tested.&lt;/p&gt;
+&lt;h2 data-hextra-search-id="limits-each-input-in-a-worker"&gt;Limits: each input in a worker&lt;span class="hx:absolute hx:-mt-20" id="limits-each-input-in-a-worker"&gt;&lt;/span&gt;
+&lt;a href="#limits-each-input-in-a-worker" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The interpreter runs in a worker process, as a notebook&amp;rsquo;s cells do, and
+&lt;code&gt;--timeout&lt;/code&gt; and &lt;code&gt;--memory&lt;/code&gt; apply to &lt;strong&gt;each input&lt;/strong&gt;:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-console" data-lang="console"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="gp"&gt;$&lt;/span&gt; notebook irb --timeout 3s --memory &lt;span class="m"&gt;256&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;irb(main):001&amp;gt; kept = 1
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;=&amp;gt; 1
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;irb(main):002&amp;gt; loop { }
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;stopped: the input ran longer than 3s, the limit; its worker was killed
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;notebook irb: the session&amp;#39;s state (locals, methods, classes) is lost; the next input starts a new worker
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;irb(main):003&amp;gt; kept
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;undefined local variable or method &amp;#39;kept&amp;#39; for main (NameError)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt; from (irb):3:in &amp;#39;&amp;lt;main&amp;gt;&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;rbgo cannot be interrupted in the middle of an evaluation, so stopping an
+input — a limit, or Ctrl-C — kills its worker: the prompt stays, the next
+input gets a new worker, and the session says that the old one&amp;rsquo;s locals,
+methods and classes are gone. The worker is in a process group of its own, so
+Ctrl-C in the terminal reaches the session, which stops the worker; it is not
+the worker that dies of it.&lt;/p&gt;
+&lt;p&gt;The worker&amp;rsquo;s standard input is empty (&lt;code&gt;gets&lt;/code&gt; returns &lt;code&gt;nil&lt;/code&gt;): its own is the
+protocol with the session.&lt;/p&gt;
+&lt;h2 data-hextra-search-id="figures"&gt;Figures&lt;span class="hx:absolute hx:-mt-20" id="figures"&gt;&lt;/span&gt;
+&lt;a href="#figures" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;A value that shows itself — a &lt;code&gt;Plot&lt;/code&gt; figure — is never printed as SVG:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-console" data-lang="console"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;irb(main):014&amp;gt; fig, ax = Plot.subplots
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;=&amp;gt; [#&amp;lt;Plot::Figure 640x480&amp;gt;, #&amp;lt;Plot::Axes&amp;gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;irb(main):015&amp;gt; ax.plot([1, 2, 3], [3, 1, 2])
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;=&amp;gt; nil
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;irb(main):016&amp;gt; fig
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;=&amp;gt; #&amp;lt;Plot::Figure 640x480&amp;gt; (a figure: --svg-dir saves it as SVG)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;With &lt;code&gt;--svg-dir figures&lt;/code&gt;, each figure an input shows is written to
+&lt;code&gt;figures/figure-N.svg&lt;/code&gt;, and the line says where.&lt;/p&gt;
+&lt;h2 data-hextra-search-id="saving-the-session-as-a-notebook"&gt;Saving the session as a notebook&lt;span class="hx:absolute hx:-mt-20" id="saving-the-session-as-a-notebook"&gt;&lt;/span&gt;
+&lt;a href="#saving-the-session-as-a-notebook" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;code&gt;--save session.md&lt;/code&gt; writes, when the session ends, the inputs that ran as
+&lt;code&gt;```ruby&lt;/code&gt; cells, which &lt;code&gt;notebook run session.md&lt;/code&gt; runs again. A notebook has
+rules a session does not — each name is defined by one cell, and &lt;code&gt;_&lt;/code&gt; stays in
+its cell — so the inputs are grouped:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;one cell per input, by default;&lt;/li&gt;
+&lt;li&gt;an input that defines or assigns a name an earlier cell defines (&lt;code&gt;x = x.sum&lt;/code&gt;
+after &lt;code&gt;x = [...]&lt;/code&gt;, a method defined again) is joined to that cell, with every
+input in between;&lt;/li&gt;
+&lt;li&gt;an input that reads &lt;code&gt;_&lt;/code&gt; is joined to the one before it, which then assigns
+&lt;code&gt;_&lt;/code&gt; its value (&lt;code&gt;_ = begin … end&lt;/code&gt;), as irb did;&lt;/li&gt;
+&lt;li&gt;should the result still break a rule (two methods that call each other,
+defined in two inputs), all the inputs make one cell.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The inputs that raised an exception are left out, and the notebook says how
+many. For the session above:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-markdown" data-lang="markdown"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;```ruby
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;9&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;fit&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Stats&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Normal&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;_&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;begin&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;fit&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;loc&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;_&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;sq&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;v&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;sq&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sum&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;```&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;```ruby
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;s&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;multi
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt;line string&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;```&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The saved notebook is a record of what ran, not of the session&amp;rsquo;s state: a
+worker stopped in the middle of the session does not change it.&lt;/p&gt;
+&lt;h2 data-hextra-search-id="history"&gt;History&lt;span class="hx:absolute hx:-mt-20" id="history"&gt;&lt;/span&gt;
+&lt;a href="#history" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The inputs are kept in &lt;code&gt;irb_history&lt;/code&gt; under the user config directory&amp;rsquo;s
+&lt;code&gt;go-notebook&lt;/code&gt; (&lt;code&gt;~/.config/go-notebook/irb_history&lt;/code&gt; on Linux,
+&lt;code&gt;~/Library/Application Support/go-notebook/irb_history&lt;/code&gt; on macOS,
+&lt;code&gt;%AppData%\go-notebook\irb_history&lt;/code&gt; on Windows), in irb&amp;rsquo;s format (a multi-line
+input&amp;rsquo;s lines joined by &lt;code&gt;\&lt;/code&gt;):&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;the &lt;strong&gt;inputs only, never their values&lt;/strong&gt;;&lt;/li&gt;
+&lt;li&gt;the last &lt;code&gt;--history-size&lt;/code&gt; of them (1000, irb&amp;rsquo;s default; &lt;code&gt;0&lt;/code&gt; keeps no file);&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;mode 0600&lt;/strong&gt; (read and written by its owner only), in a directory made with
+mode 0700; it is written through a new file renamed over the old one, and
+another session&amp;rsquo;s inputs saved meanwhile are kept;&lt;/li&gt;
+&lt;li&gt;a file that cannot be read, or one over 8 MiB, is left alone, and the session
+keeps no history.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 data-hextra-search-id="flags"&gt;Flags&lt;span class="hx:absolute hx:-mt-20" id="flags"&gt;&lt;/span&gt;
+&lt;a href="#flags" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Flag&lt;/th&gt;
+&lt;th&gt;Default&lt;/th&gt;
+&lt;th&gt;Meaning&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;-t&lt;/code&gt;, &lt;code&gt;--timeout&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;0&lt;/code&gt; (no limit)&lt;/td&gt;
+&lt;td&gt;stop an input that runs longer than this&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;-m&lt;/code&gt;, &lt;code&gt;--memory&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;0&lt;/code&gt; (no limit)&lt;/td&gt;
+&lt;td&gt;stop an input whose worker holds more than this many MiB of Go heap&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;-s&lt;/code&gt;, &lt;code&gt;--save&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;write the session, at its end, as a notebook&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;--svg-dir&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;save each figure as an SVG file in this directory&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;--history&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;see above&lt;/td&gt;
+&lt;td&gt;the history file&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;--history-size&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;1000&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;how many inputs the history keeps; &lt;code&gt;0&lt;/code&gt;: no history file&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;-w&lt;/code&gt;, &lt;code&gt;--work&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;go-notebook/irb&lt;/code&gt; under the user cache directory&lt;/td&gt;
+&lt;td&gt;where the worker is built&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;--runtime-src&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;use the go-notebook source tree at this path instead of a released runtime&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;code&gt;NOTEBOOK_REPLACE&lt;/code&gt; points modules of the worker&amp;rsquo;s module at local checkouts,
+as for a notebook (see &lt;a href="https://go-notebook.github.io/docs/main/cli/#flags"&gt;the command&lt;/a&gt;).&lt;/p&gt;
+&lt;h2 data-hextra-search-id="not-in-it"&gt;Not in it&lt;span class="hx:absolute hx:-mt-20" id="not-in-it"&gt;&lt;/span&gt;
+&lt;a href="#not-in-it" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Go cells: a session is Ruby only. irb&amp;rsquo;s own commands beyond &lt;code&gt;exit&lt;/code&gt; and &lt;code&gt;quit&lt;/code&gt;
+(&lt;code&gt;ls&lt;/code&gt;, &lt;code&gt;show_source&lt;/code&gt;, &lt;code&gt;edit&lt;/code&gt;, …), &lt;code&gt;pp&lt;/code&gt; and &lt;code&gt;inspect&lt;/code&gt; modes, and colour are not
+there yet.&lt;/p&gt;</description></item><item><title>The notebook command</title><link>https://go-notebook.github.io/docs/main/cli/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://go-notebook.github.io/docs/main/cli/</guid><description>
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
 &lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;go install github.com/go-notebook/notebook/cmd/notebook@latest&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
@@ -20,6 +311,7 @@ data-copied-label="Copied!"
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; completion Generate the autocompletion script for the specified shell
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; help Help about any command
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; html Run the notebook and write its results as a page next to it (or --output)
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; irb Start an interactive Ruby session, as irb, on the notebook&amp;#39;s Ruby and bindings
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; run Run the notebook and print each cell&amp;#39;s results
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; serve Run the notebook again every time it changes, showing it live in a browser
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; watch Run the notebook again every time it changes, keeping its page current&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
@@ -168,6 +460,29 @@ change, and keeps its scroll position.&lt;/li&gt;
 fetched) is shown as an &lt;strong&gt;error page&lt;/strong&gt; instead of a stale one.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;The served page is the &lt;code&gt;html&lt;/code&gt; page plus the small script that reloads it.&lt;/p&gt;
+&lt;h2 data-hextra-search-id="irb"&gt;irb&lt;span class="hx:absolute hx:-mt-20" id="irb"&gt;&lt;/span&gt;
+&lt;a href="#irb" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;notebook irb
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;notebook irb --timeout 30s --memory &lt;span class="m"&gt;2048&lt;/span&gt; --save session.md --svg-dir figures
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;notebook irb &amp;lt; script.rb&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;An interactive Ruby session, as &lt;code&gt;irb&lt;/code&gt;, on the Ruby of &lt;a href="https://go-notebook.github.io/docs/main/ruby/"&gt;Ruby cells&lt;/a&gt;
+(rbgo with the go-scikit bindings), with no notebook file (v0.5.0 and later):
+&lt;code&gt;=&amp;gt; inspect&lt;/code&gt; after each input, &lt;code&gt;_&lt;/code&gt; the last value, exceptions shown without
+ending the session, reassignment allowed, multi-line input, a line editor with
+history and Tab completion. Each input runs in a worker process, to which
+&lt;code&gt;--timeout&lt;/code&gt; and &lt;code&gt;--memory&lt;/code&gt; apply; &lt;code&gt;--save&lt;/code&gt; writes the session as a notebook
+that &lt;code&gt;notebook run&lt;/code&gt; runs. &lt;a href="https://go-notebook.github.io/docs/main/irb/"&gt;The irb page&lt;/a&gt; has the details.&lt;/p&gt;
 &lt;h2 data-hextra-search-id="flags"&gt;Flags&lt;span class="hx:absolute hx:-mt-20" id="flags"&gt;&lt;/span&gt;
 &lt;a href="#flags" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;table&gt;
 &lt;thead&gt;
@@ -213,13 +528,37 @@ fetched) is shown as an &lt;strong&gt;error page&lt;/strong&gt; instead of a sta
 &lt;td&gt;&lt;code&gt;-t&lt;/code&gt;, &lt;code&gt;--timeout&lt;/code&gt;&lt;/td&gt;
 &lt;td&gt;&lt;code&gt;0&lt;/code&gt; (no limit)&lt;/td&gt;
 &lt;td&gt;all&lt;/td&gt;
-&lt;td&gt;stop a cell, in Go or in Ruby, that runs longer than this (&lt;code&gt;30s&lt;/code&gt;, &lt;code&gt;2m&lt;/code&gt;): its worker is killed, the cell fails, and the next run starts a new worker&lt;/td&gt;
+&lt;td&gt;stop a cell, in Go or in Ruby, that runs longer than this (&lt;code&gt;30s&lt;/code&gt;, &lt;code&gt;2m&lt;/code&gt;): its worker is killed, the cell fails, and the next run starts a new worker; for &lt;code&gt;irb&lt;/code&gt;, an input&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;&lt;code&gt;-m&lt;/code&gt;, &lt;code&gt;--memory&lt;/code&gt;&lt;/td&gt;
 &lt;td&gt;&lt;code&gt;0&lt;/code&gt; (no limit)&lt;/td&gt;
 &lt;td&gt;all&lt;/td&gt;
-&lt;td&gt;stop a cell whose worker&amp;rsquo;s Go heap holds more than this many MiB: the garbage collector keeps under it as long as it can, then the worker is stopped and the cell fails&lt;/td&gt;
+&lt;td&gt;stop a cell whose worker&amp;rsquo;s Go heap holds more than this many MiB: the garbage collector keeps under it as long as it can, then the worker is stopped and the cell fails; for &lt;code&gt;irb&lt;/code&gt;, an input&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;-s&lt;/code&gt;, &lt;code&gt;--save&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;irb&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;write the session, at its end, as a notebook of Ruby cells&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;--svg-dir&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;irb&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;save each figure an input shows as an SVG file in this directory&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;--history&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;go-notebook/irb_history&lt;/code&gt; under the user config directory&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;irb&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;the history file (mode 0600, the inputs only)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;--history-size&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;1000&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;irb&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;how many inputs the history keeps; &lt;code&gt;0&lt;/code&gt;: no history file&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;

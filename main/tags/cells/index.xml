@@ -213,6 +213,8 @@ lists every name.&lt;/p&gt;
 &lt;p&gt;The kernel adds &lt;code&gt;github.com/go-scikit/ruby&lt;/code&gt; to the notebook&amp;rsquo;s work module by
 itself, and builds the worker with &lt;code&gt;-tags rbgo_core&lt;/code&gt; (the Ruby language and its
 numeric stack, without gems). A notebook needs nothing more than go-notebook.&lt;/p&gt;
+&lt;p&gt;To try the same Ruby line by line, as irb, without a notebook file, run
+&lt;a href="https://go-notebook.github.io/docs/main/irb/"&gt;&lt;code&gt;notebook irb&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
 &lt;h2 data-hextra-search-id="a-mixed-notebook"&gt;A mixed notebook&lt;span class="hx:absolute hx:-mt-20" id="a-mixed-notebook"&gt;&lt;/span&gt;
 &lt;a href="#a-mixed-notebook" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;A Go cell makes the data, a Ruby cell fits it with a go-scikit binding, and a
 Go cell reads the fit back (the file&amp;rsquo;s prose is left out here):&lt;/p&gt;
