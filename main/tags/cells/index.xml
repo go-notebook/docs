@@ -434,7 +434,9 @@ memory limit counts the Go heap, sampled every 20 ms; memory held outside it
 too, with no server: the same rbgo and go-scikit bindings, compiled to
 WebAssembly. The page fetches the Ruby core (&lt;code&gt;playground-ruby.wasm&lt;/code&gt;) only when
 the open notebook has a Ruby cell, so a visitor who runs only Go never
-downloads it. The Ruby there has no bridge to the page&amp;rsquo;s JavaScript and no file
+downloads it. While the first core downloads, the page shows what go-notebook
+does, in cards that link to these pages; a core already in the browser&amp;rsquo;s cache
+opens the notebook without them. The Ruby there has no bridge to the page&amp;rsquo;s JavaScript and no file
 system, and every figure a cell shows goes through an allowlist SVG sanitizer
 before it reaches the page. Try the Ruby examples on
 &lt;a href="https://go-notebook.github.io/playground/#3-ruby" target="_blank" rel="noopener"&gt;go-notebook&amp;rsquo;s own playground&lt;/a&gt;,
