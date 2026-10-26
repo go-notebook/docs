@@ -164,7 +164,9 @@ The [playground](https://github.com/go-notebook/playground) runs Ruby cells
 too, with no server: the same rbgo and go-scikit bindings, compiled to
 WebAssembly. The page fetches the Ruby core (`playground-ruby.wasm`) only when
 the open notebook has a Ruby cell, so a visitor who runs only Go never
-downloads it. The Ruby there has no bridge to the page's JavaScript and no file
+downloads it. While the first core downloads, the page shows what go-notebook
+does, in cards that link to these pages; a core already in the browser's cache
+opens the notebook without them. The Ruby there has no bridge to the page's JavaScript and no file
 system, and every figure a cell shows goes through an allowlist SVG sanitizer
 before it reaches the page. Try the Ruby examples on
 [go-notebook's own playground](https://go-notebook.github.io/playground/#3-ruby),
