@@ -445,4 +445,173 @@ system, and every figure a cell shows goes through an allowlist SVG sanitizer
 before it reaches the page. Try the Ruby examples on
 &lt;a href="https://go-notebook.github.io/playground/#3-ruby" target="_blank" rel="noopener"&gt;go-notebook&amp;rsquo;s own playground&lt;/a&gt;,
 &lt;a href="https://go-statistics.github.io/playground/#5-ruby" target="_blank" rel="noopener"&gt;go-statistics&lt;/a&gt; and
-&lt;a href="https://go-numerics.github.io/playground/#6-ruby" target="_blank" rel="noopener"&gt;go-numerics&lt;/a&gt;.&lt;/p&gt;</description></item></channel></rss>
+&lt;a href="https://go-numerics.github.io/playground/#6-ruby" target="_blank" rel="noopener"&gt;go-numerics&lt;/a&gt;.&lt;/p&gt;</description></item><item><title>Julia cells</title><link>https://go-notebook.github.io/docs/main/julia/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://go-notebook.github.io/docs/main/julia/</guid><description>
+&lt;p&gt;A &lt;code&gt;```julia&lt;/code&gt; block is a Julia cell (go-notebook v0.6.0 and later). Julia
+cells are &lt;strong&gt;parsed and checked, but not run yet&lt;/strong&gt;:
+&lt;a href="https://github.com/go-embedded-julia/julia" target="_blank" rel="noopener"&gt;go-embedded-julia&lt;/a&gt;, the pure-Go
+Julia these cells are written for, has a complete parser today, and its
+interpreter is being written. The
+&lt;a href="https://github.com/go-scikit/roadmap/blob/main/bib/julia.md" target="_blank" rel="noopener"&gt;plan&lt;/a&gt; has the
+milestones: M1, the parser, is done; M2 (lowering) is in progress; M3, the
+runtime, is the one that makes Julia cells run.&lt;/p&gt;
+&lt;h2 data-hextra-search-id="what-works"&gt;What works&lt;span class="hx:absolute hx:-mt-20" id="what-works"&gt;&lt;/span&gt;
+&lt;a href="#what-works" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Parsing.&lt;/strong&gt; A Julia cell is parsed by go-embedded-julia&amp;rsquo;s port of
+JuliaSyntax, the parser julia 1.12 ships, which gives the same &lt;code&gt;Expr&lt;/code&gt; trees as
+julia on its whole test corpus. A syntax error is reported at the notebook&amp;rsquo;s
+line and column, with julia&amp;rsquo;s own message:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-markdown" data-lang="markdown"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;```julia
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;```&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-console" data-lang="console"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="gp"&gt;$&lt;/span&gt; notebook run broken.md
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;── cell 0 (line 4, not run)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt; error: 5:8: cell 0: syntax error: Expected `)` or `,`
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;notebook: 1 cell(s) failed
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The parse is bounded — 4 MiB per cell, a nesting depth of 1000 — so a
+notebook from anyone cannot make it run long or exhaust memory; a cell over
+the limits fails with a message saying so.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Names.&lt;/strong&gt; A Julia cell joins the &lt;a href="https://go-notebook.github.io/docs/main/cells/"&gt;rules of cells&lt;/a&gt; and the
+dependency graph: one definition per name, no assignment to another cell&amp;rsquo;s
+variable, a name starting with &lt;code&gt;_&lt;/code&gt; kept in its cell. Its names follow Julia&amp;rsquo;s
+own scope rules for an interactive context, as written in
+&lt;a href="https://docs.julialang.org/en/v1/manual/variables-and-scoping/" target="_blank" rel="noopener"&gt;Scope of Variables&lt;/a&gt;
+(Julia manual, 1.12):&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Construct&lt;/th&gt;
+&lt;th&gt;In the notebook&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;x = 1&lt;/code&gt;, &lt;code&gt;a, b = …&lt;/code&gt;, &lt;code&gt;x::Int = 1&lt;/code&gt;, &lt;code&gt;global x = 1&lt;/code&gt; at the top level, or in &lt;code&gt;if&lt;/code&gt;/&lt;code&gt;begin&lt;/code&gt; there&lt;/td&gt;
+&lt;td&gt;defines the variable&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;f(x) = …&lt;/code&gt;, &lt;code&gt;function f … end&lt;/code&gt;, &lt;code&gt;macro m … end&lt;/code&gt; (as &lt;code&gt;@m&lt;/code&gt;)&lt;/td&gt;
+&lt;td&gt;defines a function or macro&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;const C = …&lt;/code&gt;, &lt;code&gt;struct S&lt;/code&gt;, &lt;code&gt;abstract type&lt;/code&gt;, &lt;code&gt;primitive type&lt;/code&gt;, &lt;code&gt;module M&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;defines a constant or type&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;using A&lt;/code&gt;, &lt;code&gt;using A: x, y&lt;/code&gt;, &lt;code&gt;import A.B&lt;/code&gt;, &lt;code&gt;import A as B&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;defines what it binds (&lt;code&gt;A&lt;/code&gt;; &lt;code&gt;x&lt;/code&gt; and &lt;code&gt;y&lt;/code&gt;; &lt;code&gt;B&lt;/code&gt;)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;function&lt;/code&gt;, &lt;code&gt;macro&lt;/code&gt; and &lt;code&gt;struct&lt;/code&gt; bodies, &lt;code&gt;let&lt;/code&gt;, &lt;code&gt;do&lt;/code&gt;, &lt;code&gt;-&amp;gt;&lt;/code&gt;, comprehensions and generators&lt;/td&gt;
+&lt;td&gt;hard scopes: an assignment there makes a local&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;for&lt;/code&gt;, &lt;code&gt;while&lt;/code&gt;, &lt;code&gt;try&lt;/code&gt; at the top level&lt;/td&gt;
+&lt;td&gt;soft scopes: an assignment there to an existing global assigns it (as in the REPL and IJulia); otherwise it makes a local of the loop&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;a name read before the cell assigns it, in any scope where no local binds it&lt;/td&gt;
+&lt;td&gt;a use: the cell depends on the cell that defines it&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;These rules are checked against julia itself: 61 cells, from each kind of
+definition to keyword defaults, &lt;code&gt;where&lt;/code&gt; bounds and nested generators, are
+lowered by julia 1.12.6 (through &lt;code&gt;REPL.softscope&lt;/code&gt;, the soft-scope rule of the
+REPL), and the globals julia declares and reads are the names go-notebook
+finds.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Across languages.&lt;/strong&gt; A Julia cell&amp;rsquo;s variables are seen by Go and Ruby cells,
+and a Julia cell sees theirs, as between Ruby and Go (see
+&lt;a href="https://go-notebook.github.io/docs/main/ruby/"&gt;Ruby cells&lt;/a&gt;); functions, macros, constants and types stay in Julia.&lt;/p&gt;
+&lt;h2 data-hextra-search-id="what-does-not-work-yet-running"&gt;What does not work yet: running&lt;span class="hx:absolute hx:-mt-20" id="what-does-not-work-yet-running"&gt;&lt;/span&gt;
+&lt;a href="#what-does-not-work-yet-running" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Running a Julia cell fails, clearly, and the cells that need it say why:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-markdown" data-lang="markdown"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;```go
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nx"&gt;n&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;:=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;```&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;```julia
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;xs&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;total&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;xs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;```&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;```go
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nx"&gt;total&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;```&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;```go
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nx"&gt;n&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;```&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-console" data-lang="console"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="gp"&gt;$&lt;/span&gt; notebook run julia.md
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;── cell 0 (line 4, ran in 11µs)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;── cell 1 (line 8, not run)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt; error: Julia cells are parsed and checked, but not run yet: execution arrives with go-embedded-julia&amp;#39;s runtime (milestone M3)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;── cell 2 (line 13, not run)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt; error: blocked: it depends on cell 1, a Julia cell, and Julia cells are not run yet
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;── cell 3 (line 17, ran in 28µs)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt; 20
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;notebook: 2 cell(s) failed
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;(Real transcripts, from go-notebook&amp;rsquo;s main branch on an Apple M4 Max.)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;a Julia cell never runs, and &lt;code&gt;notebook run&lt;/code&gt; exits non-zero;&lt;/li&gt;
+&lt;li&gt;every cell that reads what a Julia cell defines — directly or through other
+cells, in any language — is &lt;strong&gt;blocked&lt;/strong&gt;, not silently skipped;&lt;/li&gt;
+&lt;li&gt;the other cells run as usual.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;go-notebook starts no external &lt;code&gt;julia&lt;/code&gt;: the cells will run on
+go-embedded-julia&amp;rsquo;s own runtime, in the same worker as Go and Ruby cells,
+when it exists. The HTML page shows a Julia cell&amp;rsquo;s source uncoloured (go-rouge
+has no Julia lexer yet).&lt;/p&gt;
+&lt;h2 data-hextra-search-id="in-the-browser"&gt;In the browser&lt;span class="hx:absolute hx:-mt-20" id="in-the-browser"&gt;&lt;/span&gt;
+&lt;a href="#in-the-browser" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The &lt;a href="https://go-notebook.github.io/playground/" target="_blank" rel="noopener"&gt;playground&lt;/a&gt; parses and checks
+Julia cells in the same way, in WebAssembly: a syntax error is shown at its
+line, the cell&amp;rsquo;s badge reads &lt;strong&gt;Julia — not runnable yet&lt;/strong&gt;, and the cells that
+read it are blocked.&lt;/p&gt;</description></item></channel></rss>
