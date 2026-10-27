@@ -9,7 +9,7 @@ tags: [playground]
 The [playground](https://go-notebook.github.io/playground/) runs a notebook
 in the browser, with no server. Go cells run in an interpreter compiled to
 WebAssembly; Ruby cells run in [rbgo](https://github.com/go-embedded-ruby/ruby).
-These are its controls from go-notebook/playground v0.5.0. The keys are
+These are its controls from go-notebook/playground v0.6.0. The keys are
 Jupyter's, with the same meanings; every key has a button too, because a
 phone has no keyboard.
 
@@ -45,7 +45,8 @@ On a narrow screen a cell's buttons fold behind **⋯**.
 ## Choosing and changing a language
 
 **+ Add cell** asks what the new cell is: Go, Ruby, Julia or Markdown. A
-Julia cell is parsed and checked, not run yet, and the menu says so. The language
+Julia cell is parsed and checked, not run yet, and the menu says so
+(*Julia · not runnable yet*); a cell that reads it is shown as blocked. The language
 of the code cell above comes first, marked *(as above)*. A cell's language
 menu changes the language later. Only the fence changes, from ` ```ruby `
 to ` ```go ` for instance. **The code is not translated**, and the cell
