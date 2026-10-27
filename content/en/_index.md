@@ -8,7 +8,8 @@ description: "Go notebooks with native speed, kept values and a reproducible ord
 ---
 
 **A notebook is a Markdown file whose ` ```go ` blocks are cells**, and its
-` ```ruby ` blocks too ([Ruby cells](ruby.md)). The go-notebook kernel:
+` ```ruby ` blocks too ([Ruby cells](ruby.md)); ` ```julia ` blocks are parsed
+and checked, not run yet ([Julia cells](julia.md)). The go-notebook kernel:
 
 - **compiles it** into a real Go program, so cells run at native speed;
 - **orders the cells by what they use**, worked out from the code itself as
@@ -81,6 +82,7 @@ is not summed again. (A real transcript, from `notebook` built at main
 | [Notebooks](notebooks.md) | what a notebook file is, and why it is Markdown |
 | [Cells](cells.md) | the rules a cell follows, and the errors that enforce them |
 | [Ruby cells](ruby.md) | Ruby cells with the go-scikit bindings, how values cross between Go and Ruby, and the limits |
+| [Julia cells](julia.md) | Julia cells: parsed and checked with go-embedded-julia's parser, their names in the graph — not run yet |
 | [irb](irb.md) | `notebook irb`: an interactive Ruby session on the same Ruby and bindings, as irb |
 | [The notebook command](cli.md) | `run`, `html`, `watch`, `serve` and `irb`, and their flags |
 | [The kernel](kernel.md) | how the kernel decides what to run, and what it keeps |
