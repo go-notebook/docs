@@ -44,7 +44,8 @@ On a narrow screen a cell's buttons fold behind **⋯**.
 
 ## Choosing and changing a language
 
-**+ Add cell** asks what the new cell is: Go, Ruby or Markdown. The language
+**+ Add cell** asks what the new cell is: Go, Ruby, Julia or Markdown. A
+Julia cell is parsed and checked, not run yet, and the menu says so. The language
 of the code cell above comes first, marked *(as above)*. A cell's language
 menu changes the language later. Only the fence changes, from ` ```ruby `
 to ` ```go ` for instance. **The code is not translated**, and the cell
