@@ -169,7 +169,11 @@ WebAssembly. The page fetches the Ruby core (`playground-ruby.wasm`) only when
 the open notebook has a Ruby cell, so a visitor who runs only Go never
 downloads it. While the first core downloads, the page shows what go-notebook
 does, in cards that link to these pages; a core already in the browser's cache
-opens the notebook without them. The Ruby there has no bridge to the page's JavaScript and no file
+opens the notebook without them. Each cell carries a badge, **Go** or
+**Ruby**, read from its fence (` ```go `, ` ```ruby `), never guessed from the
+code. The badge also says when the cell cannot run yet, for instance
+*Ruby · loading the Ruby runtime…*. A fence in another language stays prose
+and is marked *not run: shown as text*. The Ruby there has no bridge to the page's JavaScript and no file
 system, and every figure a cell shows goes through an allowlist SVG sanitizer
 before it reaches the page. Try the Ruby examples on
 [go-notebook's own playground](https://go-notebook.github.io/playground/#3-ruby),
