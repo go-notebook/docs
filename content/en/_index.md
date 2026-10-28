@@ -83,6 +83,7 @@ is not summed again. (A real transcript, from `notebook` built at main
 | [Cells](cells.md) | the rules a cell follows, and the errors that enforce them |
 | [Ruby cells](ruby.md) | Ruby cells with the go-scikit bindings, how values cross between Go and Ruby, and the limits |
 | [Julia cells](julia.md) | Julia cells: parsed and checked with go-embedded-julia's parser, their names in the graph — not run yet |
+| [Using the playground](playground.md) | the browser playground: editing, adding, running, switching language, deleting and moving cells, with Jupyter's keys; its limits |
 | [irb](irb.md) | `notebook irb`: an interactive Ruby session on the same Ruby and bindings, as irb |
 | [The notebook command](cli.md) | `run`, `html`, `watch`, `serve` and `irb`, and their flags |
 | [The kernel](kernel.md) | how the kernel decides what to run, and what it keeps |
