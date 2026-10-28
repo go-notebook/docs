@@ -1,0 +1,111 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>go-notebook – Playground</title><link>https://go-notebook.github.io/docs/main/tags/playground/</link><description>Recent content in Playground on go-notebook</description><generator>Hugo -- gohugo.io</generator><language>en</language><atom:link href="https://go-notebook.github.io/docs/main/tags/playground/index.xml" rel="self" type="application/rss+xml"/><item><title>Using the playground</title><link>https://go-notebook.github.io/docs/main/playground/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://go-notebook.github.io/docs/main/playground/</guid><description>
+&lt;p&gt;The &lt;a href="https://go-notebook.github.io/playground/" target="_blank" rel="noopener"&gt;playground&lt;/a&gt; runs a notebook
+in the browser, with no server. Go cells run in an interpreter compiled to
+WebAssembly; Ruby cells run in &lt;a href="https://github.com/go-embedded-ruby/ruby" target="_blank" rel="noopener"&gt;rbgo&lt;/a&gt;.
+These are its controls from go-notebook/playground v0.6.0. The keys are
+Jupyter&amp;rsquo;s, with the same meanings; every key has a button too, because a
+phone has no keyboard.&lt;/p&gt;
+&lt;h2 data-hextra-search-id="the-markdown-is-the-notebook"&gt;The Markdown is the notebook&lt;span class="hx:absolute hx:-mt-20" id="the-markdown-is-the-notebook"&gt;&lt;/span&gt;
+&lt;a href="#the-markdown-is-the-notebook" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;A notebook is a Markdown file whose &lt;code&gt;```go&lt;/code&gt; and &lt;code&gt;```ruby&lt;/code&gt; blocks are
+cells. In the playground every edit goes through the same &lt;code&gt;format&lt;/code&gt; package
+the &lt;code&gt;notebook&lt;/code&gt; command uses, and the file is written back from it.
+&lt;strong&gt;Download .md&lt;/strong&gt; gives back what you opened, byte for byte (&lt;code&gt;~~~&lt;/code&gt; fences and
+fence options included), plus your edits and nothing else. &lt;strong&gt;Open .md&lt;/strong&gt;
+reads a local file with the same rules.&lt;/p&gt;
+&lt;h2 data-hextra-search-id="editing-a-cell"&gt;Editing a cell&lt;span class="hx:absolute hx:-mt-20" id="editing-a-cell"&gt;&lt;/span&gt;
+&lt;a href="#editing-a-cell" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Type in a cell to edit it. The cell says &lt;em&gt;editing&lt;/em&gt; and has a solid outline.
+&lt;strong&gt;Esc&lt;/strong&gt; selects the cell instead: it says &lt;em&gt;selected&lt;/em&gt; and has a dashed
+outline, and the keys below act on the whole cell. &lt;strong&gt;Enter&lt;/strong&gt; edits it again.
+A Markdown cell shows as text; its &lt;strong&gt;Edit&lt;/strong&gt; button, or Enter, opens its
+source, and Esc shows it as text again.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style="text-align: left"&gt;&lt;/th&gt;
+&lt;th style="text-align: left"&gt;button&lt;/th&gt;
+&lt;th style="text-align: left"&gt;key on a selected cell&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;run this cell (and the cells above it)&lt;/td&gt;
+&lt;td style="text-align: left"&gt;▶ Run&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Shift+Enter, Ctrl/⌘+Enter (also while editing)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;run every cell&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Run all&lt;/td&gt;
+&lt;td style="text-align: left"&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;add a cell&lt;/td&gt;
+&lt;td style="text-align: left"&gt;&lt;strong&gt;+ Add cell&lt;/strong&gt; between the cells and at the end&lt;/td&gt;
+&lt;td style="text-align: left"&gt;A above, B below; Alt+Enter runs and adds below&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;change its language&lt;/td&gt;
+&lt;td style="text-align: left"&gt;the language menu on the cell&lt;/td&gt;
+&lt;td style="text-align: left"&gt;M Markdown, Y code&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;delete it&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Delete&lt;/td&gt;
+&lt;td style="text-align: left"&gt;D D&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;undo the delete&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Undo delete&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Z&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;move it&lt;/td&gt;
+&lt;td style="text-align: left"&gt;↑ ↓&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Ctrl+Shift+↑ / ↓&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;On a narrow screen a cell&amp;rsquo;s buttons fold behind &lt;strong&gt;⋯&lt;/strong&gt;.&lt;/p&gt;
+&lt;h2 data-hextra-search-id="choosing-and-changing-a-language"&gt;Choosing and changing a language&lt;span class="hx:absolute hx:-mt-20" id="choosing-and-changing-a-language"&gt;&lt;/span&gt;
+&lt;a href="#choosing-and-changing-a-language" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;+ Add cell&lt;/strong&gt; asks what the new cell is: Go, Ruby, Julia or Markdown. A
+Julia cell is parsed and checked, not run yet, and the menu says so
+(&lt;em&gt;Julia · not runnable yet&lt;/em&gt;); a cell that reads it is shown as blocked. The language
+of the code cell above comes first, marked &lt;em&gt;(as above)&lt;/em&gt;. A cell&amp;rsquo;s language
+menu changes the language later. Only the fence changes, from &lt;code&gt;```ruby&lt;/code&gt;
+to &lt;code&gt;```go&lt;/code&gt; for instance. &lt;strong&gt;The code is not translated&lt;/strong&gt;, and the cell
+says so. Then the cell runs again.&lt;/p&gt;
+&lt;p&gt;A fenced block in any other language is not a cell. It stays text, marked
+&lt;em&gt;not run: shown as text&lt;/em&gt;.&lt;/p&gt;
+&lt;h2 data-hextra-search-id="running"&gt;Running&lt;span class="hx:absolute hx:-mt-20" id="running"&gt;&lt;/span&gt;
+&lt;a href="#running" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The playground keeps no values between runs, and it has no dependency
+graph. So running a cell runs &lt;strong&gt;every cell above it too&lt;/strong&gt;, in order, and none
+of the cells below it; those keep their last results, greyed until they run
+again. The &lt;code&gt;notebook&lt;/code&gt; command does more: its kernel orders the cells by what
+they use and runs only what changed (&lt;a href="https://go-notebook.github.io/docs/main/kernel/"&gt;the kernel&lt;/a&gt;).&lt;/p&gt;
+&lt;h2 data-hextra-search-id="limits"&gt;Limits&lt;span class="hx:absolute hx:-mt-20" id="limits"&gt;&lt;/span&gt;
+&lt;a href="#limits" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;A notebook you open may come from anyone. The playground gives it:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;30 s per cell.&lt;/strong&gt; A cell that runs longer is stopped as the kernel&amp;rsquo;s
+&lt;code&gt;--timeout&lt;/code&gt; stops it: &lt;code&gt;stopped: the cell ran longer than 30s, the limit; its worker was killed&lt;/code&gt;. The next run starts a fresh runtime.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;1 MiB per notebook.&lt;/strong&gt; A larger file is refused when opened.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;No memory limit&lt;/strong&gt;, unlike the kernel&amp;rsquo;s &lt;code&gt;--memory&lt;/code&gt;. The page cannot bound
+the heap of the WebAssembly worker while a cell runs; the browser&amp;rsquo;s own
+limit is the only one.&lt;/li&gt;
+&lt;li&gt;No network, no file system and no access to the page, in Go or in Ruby.
+Every figure goes through two SVG sanitizers before it is shown.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 data-hextra-search-id="where-the-controls-come-from"&gt;Where the controls come from&lt;span class="hx:absolute hx:-mt-20" id="where-the-controls-come-from"&gt;&lt;/span&gt;
+&lt;a href="#where-the-controls-come-from" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The gestures follow Jupyter Notebook 7 and JupyterLab, read in their
+sources:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;jupyterlab/jupyterlab:
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;docs/source/user/notebook.md&lt;/code&gt;: edit and command modes;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;packages/notebook-extension/schema/tracker.json&lt;/code&gt;: the keys;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;packages/notebook/src/notebookfooter.ts&lt;/code&gt;: the add button after the last cell;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;packages/notebook/src/default-toolbar.tsx&lt;/code&gt;: the cell type menu;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;packages/cell-toolbar-extension/schema/plugin.json&lt;/code&gt;: the cell toolbar.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;The language per cell follows Polyglot Notebooks (the dotnet/interactive
+README), where each cell names its own language.&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>
