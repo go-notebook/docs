@@ -118,4 +118,13 @@ has no Julia lexer yet).
 The [playground](https://go-notebook.github.io/playground/) parses and checks
 Julia cells in the same way, in WebAssembly: a syntax error is shown at its
 line, the cell's badge reads **Julia — not runnable yet**, and the cells that
-read it are blocked.
+read it are blocked. A Julia cell that parses is shown as *not run*, and a cell
+that reads it as *blocked*, in the page's neutral style and not as failures
+(the playground's results carry a typed `status`, `notrun` or `blocked`, and
+its site build accepts exactly those two for a Julia example, while a syntax
+error still fails it).
+
+Try it: the [Julia example notebook](https://go-notebook.github.io/playground/#4-julia)
+has a Julia cell, a Go cell blocked on it and a Go cell that runs alone, and its
+prose says that Julia cells are checked, not run, until
+[go-embedded-julia](https://go-embedded-julia.github.io/)'s runtime lands.
