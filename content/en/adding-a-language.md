@@ -57,10 +57,13 @@ type Names struct {
    | `Runtime` | the Go module the worker links (import path, module, default version); the kernel adds it to the work module |
    | `TypeLearner` | variables typed when the cell has run, as Ruby's |
 
-6. **Write the run backend** for a language that runs: how its cells are
-   written into the generated program. It is a `gen` backend
-   (`gen/backend.go`; Ruby's is in `gen/ruby.go`), the one piece that lives
-   outside `analysis`.
+6. **Register the run backend** for a language that runs, with
+   `gen.RegisterBackend(name, backend)` from your own package. `Infer`
+   declares the cell's variables, `Write` writes its function and `Runtime`
+   names the import and the prelude; the imported package comes from the
+   language's `Runtime`. The `gen.Context` it receives exposes the cell, its
+   inputs, the declared variables and type resolution. No edit of `gen` is
+   needed; Ruby's backend (`gen/ruby.go`) is the model.
 
 ## Testing
 
