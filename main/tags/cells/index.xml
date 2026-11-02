@@ -624,4 +624,106 @@ error still fails it).&lt;/p&gt;
 &lt;p&gt;Try it: the &lt;a href="https://go-notebook.github.io/playground/#4-julia" target="_blank" rel="noopener"&gt;Julia example notebook&lt;/a&gt;
 has a Julia cell, a Go cell blocked on it and a Go cell that runs alone, and its
 prose says that Julia cells are checked, not run, until
-&lt;a href="https://go-embedded-julia.github.io/" target="_blank" rel="noopener"&gt;go-embedded-julia&lt;/a&gt;&amp;rsquo;s runtime lands.&lt;/p&gt;</description></item></channel></rss>
+&lt;a href="https://go-embedded-julia.github.io/" target="_blank" rel="noopener"&gt;go-embedded-julia&lt;/a&gt;&amp;rsquo;s runtime lands.&lt;/p&gt;</description></item><item><title>Adding a cell language</title><link>https://go-notebook.github.io/docs/main/adding-a-language/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://go-notebook.github.io/docs/main/adding-a-language/</guid><description>
+&lt;p&gt;A cell language is &lt;strong&gt;one registered implementation&lt;/strong&gt; of
+&lt;a href="https://github.com/go-notebook/notebook/blob/main/analysis/lang.go" target="_blank" rel="noopener"&gt;&lt;code&gt;analysis.Language&lt;/code&gt;&lt;/a&gt;,
+keyed by the first word of the fence&amp;rsquo;s info string. The graph, the kernel, the
+generator and the HTML export look a cell&amp;rsquo;s language up with
+&lt;code&gt;analysis.Lookup&lt;/code&gt; and never test for a language by name. Go, Ruby and Julia are
+registered; a fence whose word is not registered stays prose.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kd"&gt;type&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Language&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kd"&gt;interface&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;Name&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;// the fence word: &amp;#34;go&amp;#34;, &amp;#34;ruby&amp;#34;, &amp;#34;julia&amp;#34;, ...&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;Analyze&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;src&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;lim&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Limits&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;Names&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;[]&lt;/span&gt;&lt;span class="nx"&gt;Diagnostic&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;error&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;Crosses&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;owner&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;user&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;Cell&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;name&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;bool&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;Run&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Run&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kd"&gt;type&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Names&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kd"&gt;struct&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Defines&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Uses&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;[]&lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Dynamic&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;bool&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2 data-hextra-search-id="the-steps"&gt;The steps&lt;span class="hx:absolute hx:-mt-20" id="the-steps"&gt;&lt;/span&gt;
+&lt;a href="#the-steps" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Implement &lt;code&gt;Language&lt;/code&gt; and call &lt;code&gt;analysis.Register&lt;/code&gt; from &lt;code&gt;init&lt;/code&gt;.&lt;/strong&gt;
+&lt;code&gt;Analyze&lt;/code&gt; returns the names a cell defines and uses and its syntax errors
+(a &lt;code&gt;Diagnostic&lt;/code&gt; carries a byte offset in the cell). It refuses a source
+over &lt;code&gt;lim.MaxBytes&lt;/code&gt;, or nested deeper than &lt;code&gt;lim.MaxDepth&lt;/code&gt;, with an error and
+never a panic.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Say what crosses to other languages.&lt;/strong&gt; &lt;code&gt;Crosses(owner, user, name)&lt;/code&gt; is the
+owner&amp;rsquo;s rule for whether a cell of another language sees &lt;code&gt;name&lt;/code&gt;. Within one
+language every name is shared. A Go cell sees a Ruby top-level local, not a
+Ruby method or constant; a language that cannot hold every name (Go
+keywords) implements &lt;code&gt;NameChecker&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Mark dynamic cells.&lt;/strong&gt; Set &lt;code&gt;Names.Dynamic&lt;/code&gt; when a cell&amp;rsquo;s names cannot be
+resolved statically: R&amp;rsquo;s &lt;code&gt;&amp;lt;&amp;lt;-&lt;/code&gt;, &lt;code&gt;assign&lt;/code&gt; and &lt;code&gt;get&lt;/code&gt; with computed names,
+&lt;code&gt;eval(parse())&lt;/code&gt;, &lt;code&gt;attach&lt;/code&gt;, &lt;code&gt;library()&lt;/code&gt;. The graph makes a dynamic cell
+depend on &lt;strong&gt;every earlier cell&lt;/strong&gt;, and every later cell that reads any name
+depend on &lt;strong&gt;it&lt;/strong&gt;, so it runs after anything before it changed and
+invalidates whatever may read what it defined.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Say whether the cells run.&lt;/strong&gt; &lt;code&gt;Run{Runs: true}&lt;/code&gt; runs them. Otherwise the
+language is &lt;strong&gt;check-only&lt;/strong&gt;: &lt;code&gt;NotRun&lt;/code&gt; is the cell&amp;rsquo;s failure (Julia&amp;rsquo;s names
+its milestone M3), and &lt;code&gt;Blocked&lt;/code&gt;, &lt;code&gt;Reads&lt;/code&gt; and &lt;code&gt;ReadsBlocked&lt;/code&gt; are the
+messages of the cells that read it, directly or through other cells.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Optional capabilities&lt;/strong&gt;, found by type assertion:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Interface&lt;/th&gt;
+&lt;th&gt;Gives&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;CellAnalyzer&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;the full &lt;code&gt;Cell&lt;/code&gt; (chunks, funcs, types, display) instead of &lt;code&gt;Names&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;Highlighter&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;the go-rouge lexer for the HTML export; without it the source is escaped&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;Runtime&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;the Go module the worker links (import path, module, default version); the kernel adds it to the work module&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;TypeLearner&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;variables typed when the cell has run, as Ruby&amp;rsquo;s&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Register the run backend&lt;/strong&gt; for a language that runs, with
+&lt;code&gt;gen.RegisterBackend(name, backend)&lt;/code&gt; from your own package. &lt;code&gt;Infer&lt;/code&gt;
+declares the cell&amp;rsquo;s variables, &lt;code&gt;Write&lt;/code&gt; writes its function and &lt;code&gt;Runtime&lt;/code&gt;
+names the import and the prelude; the imported package comes from the
+language&amp;rsquo;s &lt;code&gt;Runtime&lt;/code&gt;. The &lt;code&gt;gen.Context&lt;/code&gt; it receives exposes the cell, its
+inputs, the declared variables and type resolution. No edit of &lt;code&gt;gen&lt;/code&gt; is
+needed; Ruby&amp;rsquo;s backend (&lt;code&gt;gen/ruby.go&lt;/code&gt;) is the model.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 data-hextra-search-id="testing"&gt;Testing&lt;span class="hx:absolute hx:-mt-20" id="testing"&gt;&lt;/span&gt;
+&lt;a href="#testing" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Test with a fake language that implements only &lt;code&gt;Language&lt;/code&gt;, as
+&lt;code&gt;analysis/lang_test.go&lt;/code&gt; does, and fuzz the dispatch with unknown or hostile
+fence words (&lt;code&gt;FuzzDispatch&lt;/code&gt;). The project keeps 100 % coverage.&lt;/p&gt;</description></item></channel></rss>
