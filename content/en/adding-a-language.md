@@ -9,7 +9,7 @@ A cell language is **one registered implementation** of
 [`analysis.Language`](https://github.com/go-notebook/notebook/blob/main/analysis/lang.go),
 keyed by the first word of the fence's info string. The graph, the kernel, the
 generator and the HTML export look a cell's language up with
-`analysis.Lookup` and never test for a language by name. Go, Ruby and Julia are
+`analysis.Lookup` and never test for a language by name. Go, Ruby, Julia and R are
 registered; a fence whose word is not registered stays prose.
 
 ```go
