@@ -126,7 +126,7 @@ generating and building took, and &lt;code&gt;Report.Diags&lt;/code&gt; holds th
 &lt;a href="https://github.com/go-notebook/notebook/blob/main/analysis/lang.go" target="_blank" rel="noopener"&gt;&lt;code&gt;analysis.Language&lt;/code&gt;&lt;/a&gt;,
 keyed by the first word of the fence&amp;rsquo;s info string. The graph, the kernel, the
 generator and the HTML export look a cell&amp;rsquo;s language up with
-&lt;code&gt;analysis.Lookup&lt;/code&gt; and never test for a language by name. Go, Ruby and Julia are
+&lt;code&gt;analysis.Lookup&lt;/code&gt; and never test for a language by name. Go, Ruby, Julia and R are
 registered; a fence whose word is not registered stays prose.&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
 &lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kd"&gt;type&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Language&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kd"&gt;interface&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;

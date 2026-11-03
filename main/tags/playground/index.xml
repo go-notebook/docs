@@ -66,9 +66,10 @@ source, and Esc shows it as text again.&lt;/p&gt;
 &lt;/table&gt;
 &lt;p&gt;On a narrow screen a cell&amp;rsquo;s buttons fold behind &lt;strong&gt;⋯&lt;/strong&gt;.&lt;/p&gt;
 &lt;h2 data-hextra-search-id="choosing-and-changing-a-language"&gt;Choosing and changing a language&lt;span class="hx:absolute hx:-mt-20" id="choosing-and-changing-a-language"&gt;&lt;/span&gt;
-&lt;a href="#choosing-and-changing-a-language" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;+ Add cell&lt;/strong&gt; asks what the new cell is: Go, Ruby, Julia or Markdown. A
-Julia cell is parsed and checked, not run yet, and the menu says so
-(&lt;em&gt;Julia · not runnable yet&lt;/em&gt;); a cell that reads it is shown as blocked. The language
+&lt;a href="#choosing-and-changing-a-language" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;+ Add cell&lt;/strong&gt; asks what the new cell is: Go, Ruby, Julia, R or Markdown,
+the languages go-notebook registers. A Julia or R cell is parsed and
+checked, not run yet, and the menu says so (&lt;em&gt;Julia · not runnable yet&lt;/em&gt;,
+&lt;em&gt;R · not runnable yet&lt;/em&gt;); a cell that reads it is shown as blocked. The language
 of the code cell above comes first, marked &lt;em&gt;(as above)&lt;/em&gt;. A cell&amp;rsquo;s language
 menu changes the language later. Only the fence changes, from &lt;code&gt;```ruby&lt;/code&gt;
 to &lt;code&gt;```go&lt;/code&gt; for instance. &lt;strong&gt;The code is not translated&lt;/strong&gt;, and the cell
