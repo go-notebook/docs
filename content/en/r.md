@@ -9,7 +9,10 @@ A ` ```r ` block is an R cell (parsed since go-notebook v0.8.0, run since
 v0.10.0). The R is [go-embedded-r](https://github.com/go-embedded-r/r), a
 pure-Go R: go-notebook starts no external `R`. Its parser checks the cell and
 its evaluator runs it. Since v0.12.0 every R cell is bounded (see
-[Limits](#limits)).
+[Limits](#limits)). go-notebook v0.13.0 runs go-embedded-r v0.6.0: environments
+as values, the apply family and the string functions (v0.5.0), and regular
+expressions that follow R's TRE (`perl=TRUE` and approximate matching are
+refused).
 
 ```r
 xs <- c(2.1, 3.4, 1.9, 5.6)
