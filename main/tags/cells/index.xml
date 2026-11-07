@@ -629,7 +629,10 @@ prose says that Julia cells are checked, not run, until
 v0.10.0). The R is &lt;a href="https://github.com/go-embedded-r/r" target="_blank" rel="noopener"&gt;go-embedded-r&lt;/a&gt;, a
 pure-Go R: go-notebook starts no external &lt;code&gt;R&lt;/code&gt;. Its parser checks the cell and
 its evaluator runs it. Since v0.12.0 every R cell is bounded (see
-&lt;a href="#limits"&gt;Limits&lt;/a&gt;).&lt;/p&gt;
+&lt;a href="#limits"&gt;Limits&lt;/a&gt;). go-notebook v0.13.0 runs go-embedded-r v0.6.0: environments
+as values, the apply family and the string functions (v0.5.0), and regular
+expressions that follow R&amp;rsquo;s TRE (&lt;code&gt;perl=TRUE&lt;/code&gt; and approximate matching are
+refused).&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
 &lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-r" data-lang="r"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;xs&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;2.1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;3.4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;1.9&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;5.6&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;total&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;xs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
