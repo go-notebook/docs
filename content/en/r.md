@@ -14,6 +14,13 @@ as values, the apply family and the string functions (v0.5.0), and regular
 expressions that follow R's TRE (`perl=TRUE` and approximate matching are
 refused).
 
+Since go-notebook v0.14.0 (go-embedded-r v0.13.1), a cell can use files and
+connections: `readLines`/`writeLines`, `file.*`, `saveRDS`/`readRDS`,
+`source`, `sink`/`capture.output`. The files live in a private in-memory file
+system of at most 64 MiB per notebook, shared by its R cells. No host file is
+reachable, and `Sys.getenv` sees no host variable: a notebook may come from
+anyone.
+
 ```r
 xs <- c(2.1, 3.4, 1.9, 5.6)
 total <- sum(xs)
