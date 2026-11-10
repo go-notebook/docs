@@ -633,6 +633,12 @@ its evaluator runs it. Since v0.12.0 every R cell is bounded (see
 as values, the apply family and the string functions (v0.5.0), and regular
 expressions that follow R&amp;rsquo;s TRE (&lt;code&gt;perl=TRUE&lt;/code&gt; and approximate matching are
 refused).&lt;/p&gt;
+&lt;p&gt;Since go-notebook v0.14.0 (go-embedded-r v0.13.1), a cell can use files and
+connections: &lt;code&gt;readLines&lt;/code&gt;/&lt;code&gt;writeLines&lt;/code&gt;, &lt;code&gt;file.*&lt;/code&gt;, &lt;code&gt;saveRDS&lt;/code&gt;/&lt;code&gt;readRDS&lt;/code&gt;,
+&lt;code&gt;source&lt;/code&gt;, &lt;code&gt;sink&lt;/code&gt;/&lt;code&gt;capture.output&lt;/code&gt;. The files live in a private in-memory file
+system of at most 64 MiB per notebook, shared by its R cells. No host file is
+reachable, and &lt;code&gt;Sys.getenv&lt;/code&gt; sees no host variable: a notebook may come from
+anyone.&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
 &lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-r" data-lang="r"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;xs&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;2.1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;3.4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;1.9&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;5.6&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;total&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;xs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
