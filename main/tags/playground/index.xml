@@ -18,6 +18,14 @@ reads a local file with the same rules.&lt;/p&gt;
 outline, and the keys below act on the whole cell. &lt;strong&gt;Enter&lt;/strong&gt; edits it again.
 A Markdown cell shows as text; its &lt;strong&gt;Edit&lt;/strong&gt; button, or Enter, opens its
 source, and Esc shows it as text again.&lt;/p&gt;
+&lt;p&gt;Since playground v0.11.0 a code cell is a code editor with syntax
+highlighting (go-rouge), and a Markdown cell keeps a plain text box. For a
+screen reader each code cell is one textbox, named &amp;ldquo;Go cell N&amp;rdquo; (or the cell&amp;rsquo;s
+language). IME input works, the browser&amp;rsquo;s Ctrl+F finds code, a selection that
+runs from prose into code copies, and the wheel scrolls the page (a long line
+scrolls sideways). A cell is as tall as its code. The page first shows a plain
+text box and keeps it if the editor fails to load. The editor adds 1.8 MB
+(brotli) to the page&amp;rsquo;s download.&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
