@@ -30,6 +30,15 @@ outline, and the keys below act on the whole cell. **Enter** edits it again.
 A Markdown cell shows as text; its **Edit** button, or Enter, opens its
 source, and Esc shows it as text again.
 
+Since playground v0.11.0 a code cell is a code editor with syntax
+highlighting (go-rouge), and a Markdown cell keeps a plain text box. For a
+screen reader each code cell is one textbox, named "Go cell N" (or the cell's
+language). IME input works, the browser's Ctrl+F finds code, a selection that
+runs from prose into code copies, and the wheel scrolls the page (a long line
+scrolls sideways). A cell is as tall as its code. The page first shows a plain
+text box and keeps it if the editor fails to load. The editor adds 1.8 MB
+(brotli) to the page's download.
+
 | | button | key on a selected cell |
 |:--|:--|:--|
 | run this cell (and the cells above it) | ▶ Run | Shift+Enter, Ctrl/⌘+Enter (also while editing) |
