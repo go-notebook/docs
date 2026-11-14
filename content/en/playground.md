@@ -8,7 +8,8 @@ tags: [playground]
 
 The [playground](https://go-notebook.github.io/playground/) runs a notebook
 in the browser, with no server. Go cells run in an interpreter compiled to
-WebAssembly; Ruby cells run in [rbgo](https://github.com/go-embedded-ruby/ruby).
+WebAssembly; Ruby cells run in [rbgo](https://github.com/go-embedded-ruby/ruby), and R cells in
+[go-embedded-r](https://github.com/go-embedded-r/r).
 These are its controls from go-notebook/playground v0.6.0. The keys are
 Jupyter's, with the same meanings; every key has a button too, because a
 phone has no keyboard.
@@ -39,6 +40,33 @@ scrolls sideways). A cell is as tall as its code. The page first shows a plain
 text box and keeps it if the editor fails to load. The editor adds 1.8 MB
 (brotli) to the page's download.
 
+Since playground v0.13.0 the code is set in Go Mono at 13 CSS px (a host can
+set `Config.FontPx`, 8 to 32). A **minimap** on the right of each cell shows
+its whole source; a click on it moves the caret there. It is hidden under
+480 px.
+
+### Line annotations
+
+A note can be attached to a line of a code cell (playground v0.13.0). Put the
+caret on the line and press **Ctrl+Shift+M**: a marker appears in the gutter
+and an inline panel opens under the line, where you type the note. Click the
+marker, or press Ctrl+Shift+M again, to open or close the panel. The panel is
+a labelled, keyboard-reachable control, so a screen reader announces it.
+
+The notes live in the Markdown, on one line after the cell's closing fence:
+
+````markdown
+```go
+x := 1
+y := x * 2
+```
+<!-- gonb:notes {"v":1,"notes":[{"line":2,"text":"doubled"}]} -->
+````
+
+`line` counts from 1 inside the cell. The line is an HTML comment, so any
+other Markdown reader ignores it, and **Download .md** and **Open .md** keep
+it: the notes survive a round trip.
+
 | | button | key on a selected cell |
 |:--|:--|:--|
 | run this cell (and the cells above it) | ▶ Run | Shift+Enter, Ctrl/⌘+Enter (also while editing) |
@@ -54,11 +82,12 @@ On a narrow screen a cell's buttons fold behind **⋯**.
 ## Choosing and changing a language
 
 **+ Add cell** asks what the new cell is: Go, Ruby, C, Julia, R or Markdown,
-the languages go-notebook registers. A C, Julia or R cell is parsed and
+the languages go-notebook registers. A C or Julia cell is parsed and
 checked, not run yet, and the menu says so (*C · not runnable yet*,
-*Julia · not runnable yet*, *R · not runnable yet*); a cell that reads it is
+*Julia · not runnable yet*); a cell that reads it is
 shown as blocked. C cells are checked in order, so a cell sees the typedefs
-and macros of the C cells above it (playground v0.12.0). The language
+and macros of the C cells above it (playground v0.12.0). An R cell **runs**
+(playground v0.14.0), see [R cells](#r-cells). The language
 of the code cell above comes first, marked *(as above)*. A cell's language
 menu changes the language later. Only the fence changes, from ` ```ruby `
 to ` ```go ` for instance. **The code is not translated**, and the cell
@@ -74,6 +103,17 @@ graph. So running a cell runs **every cell above it too**, in order, and none
 of the cells below it; those keep their last results, greyed until they run
 again. The `notebook` command does more: its kernel orders the cells by what
 they use and runs only what changed ([the kernel](kernel.md)).
+
+## R cells
+
+Since playground v0.14.0 an R cell runs in the page, in the second core, on
+[go-embedded-r](https://github.com/go-embedded-r/r)'s evaluator, with no
+external R. R's variables are isolated: they persist from one R cell to the
+next, and do not cross to the Go or Ruby cells. A cell is bounded: **512 MiB**
+of vectors, **20 million steps**, **10 s** and a nesting depth of **300**. A
+cell that goes past one is stopped with a message that says which. If the core
+crashes it is restarted, and the cell shows a message. The second core is
+about 4.5 MB larger.
 
 ## Limits
 
