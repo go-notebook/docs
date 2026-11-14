@@ -53,10 +53,12 @@ On a narrow screen a cell's buttons fold behind **⋯**.
 
 ## Choosing and changing a language
 
-**+ Add cell** asks what the new cell is: Go, Ruby, Julia, R or Markdown,
-the languages go-notebook registers. A Julia or R cell is parsed and
-checked, not run yet, and the menu says so (*Julia · not runnable yet*,
-*R · not runnable yet*); a cell that reads it is shown as blocked. The language
+**+ Add cell** asks what the new cell is: Go, Ruby, C, Julia, R or Markdown,
+the languages go-notebook registers. A C, Julia or R cell is parsed and
+checked, not run yet, and the menu says so (*C · not runnable yet*,
+*Julia · not runnable yet*, *R · not runnable yet*); a cell that reads it is
+shown as blocked. C cells are checked in order, so a cell sees the typedefs
+and macros of the C cells above it (playground v0.12.0). The language
 of the code cell above comes first, marked *(as above)*. A cell's language
 menu changes the language later. Only the fence changes, from ` ```ruby `
 to ` ```go ` for instance. **The code is not translated**, and the cell
