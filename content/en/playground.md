@@ -9,8 +9,9 @@ tags: [playground]
 The [playground](https://go-notebook.github.io/playground/) runs a notebook
 in the browser, with no server. Go cells run in an interpreter compiled to
 WebAssembly; Ruby cells run in [rbgo](https://github.com/go-embedded-ruby/ruby), R cells in
-[go-embedded-r](https://github.com/go-embedded-r/r) and Fortran cells in
-[go-embedded-fortran](https://github.com/go-embedded-fortran/fortran).
+[go-embedded-r](https://github.com/go-embedded-r/r), Fortran cells in
+[go-embedded-fortran](https://github.com/go-embedded-fortran/fortran) and Julia
+cells in [go-embedded-julia](https://github.com/go-embedded-julia/julia).
 These are its controls from go-notebook/playground v0.6.0. The keys are
 Jupyter's, with the same meanings; every key has a button too, because a
 phone has no keyboard.
@@ -83,10 +84,10 @@ On a narrow screen a cell's buttons fold behind **⋯**.
 ## Choosing and changing a language
 
 **+ Add cell** asks what the new cell is: Go, Fortran, R, Ruby, C, Julia or Markdown,
-the languages go-notebook registers. A C or Julia cell is parsed and
-checked, not run yet, and the menu says so (*C · not runnable yet*,
-*Julia · not runnable yet*); a cell that reads it is
-shown as blocked. C cells are checked in order, so a cell sees the typedefs
+the languages go-notebook registers. A C cell is parsed and
+checked, not run yet, and the menu says so (*C · not runnable yet*); a cell
+that reads it is shown as blocked. A Julia cell **runs**, in a third core
+loaded the first time one is run, see [Julia cells](#julia-cells). C cells are checked in order, so a cell sees the typedefs
 and macros of the C cells above it (playground v0.12.0). An R cell **runs**
 (playground v0.14.0), see [R cells](#r-cells). The language
 of the code cell above comes first, marked *(as above)*. A cell's language
@@ -126,6 +127,23 @@ languages. A cell is bounded: **200 million** DO iterations and calls, **10 s**
 and 16 MiB of output per stream; an endless `do` ends with a message that says
 so and the page stays usable. The second core is about 1.3 MB larger. See
 [Fortran cells](fortran.md).
+
+## Julia cells
+
+Since playground v0.18.0 a Julia cell runs in the page, in a **third core**
+(the second core plus go-embedded-julia's interpreter) that the page loads only
+when a Julia cell is run: about **28 MB** (20 MB for the core and 7.8 MB for the
+Base image, gzipped) and about **20 s** the first time, with the progress shown
+on the cell. A page that opens a Julia notebook, or runs the cells above its
+first Julia cell, downloads nothing for Julia. A cell is bounded: **512 MiB** of
+arrays, **20 million statements**, **20 s** and 16 MiB of output. Julia's
+variables are **isolated from Go's** in the page: they persist from one Julia
+cell to the next and do not cross to the other languages (they do in
+`notebook run`). Each run that executed a Julia cell is followed by a
+replacement of the Julia worker, so the next run has a fresh kernel
+([go-embedded-julia#92](https://github.com/go-embedded-julia/julia/issues/92),
+[#93](https://github.com/go-embedded-julia/julia/issues/93)). See
+[Julia cells](julia.md#in-the-browser).
 
 ## Limits
 
