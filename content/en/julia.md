@@ -6,7 +6,7 @@ tags: [cells, julia]
 ---
 
 A ` ```julia ` block is a Julia cell (parsed since go-notebook v0.6.0, **run**
-on go-notebook's main branch, in the release after v0.17.0).
+in go-notebook v0.18.0).
 [go-embedded-julia](https://github.com/go-embedded-julia/julia) is the
 pure-Go Julia these cells run on: its parser for the names and the syntax
 errors, its interpreter (v0.15.0) for the running. No external `julia` is
@@ -40,7 +40,7 @@ $ notebook run julia.md
    31
 ```
 
-(A real transcript, from go-notebook's main branch on an Apple M4 Max; the
+(A real transcript, from the change that became go-notebook v0.18.0, on an Apple M4 Max; the
 first cell pays the kernel's cold start.)
 
 An exception fails the cell with julia's text of it after `ERROR:`, after the
