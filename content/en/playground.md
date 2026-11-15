@@ -8,8 +8,9 @@ tags: [playground]
 
 The [playground](https://go-notebook.github.io/playground/) runs a notebook
 in the browser, with no server. Go cells run in an interpreter compiled to
-WebAssembly; Ruby cells run in [rbgo](https://github.com/go-embedded-ruby/ruby), and R cells in
-[go-embedded-r](https://github.com/go-embedded-r/r).
+WebAssembly; Ruby cells run in [rbgo](https://github.com/go-embedded-ruby/ruby), R cells in
+[go-embedded-r](https://github.com/go-embedded-r/r) and Fortran cells in
+[go-embedded-fortran](https://github.com/go-embedded-fortran/fortran).
 These are its controls from go-notebook/playground v0.6.0. The keys are
 Jupyter's, with the same meanings; every key has a button too, because a
 phone has no keyboard.
@@ -81,7 +82,7 @@ On a narrow screen a cell's buttons fold behind **⋯**.
 
 ## Choosing and changing a language
 
-**+ Add cell** asks what the new cell is: Go, Ruby, C, Julia, R or Markdown,
+**+ Add cell** asks what the new cell is: Go, Fortran, R, Ruby, C, Julia or Markdown,
 the languages go-notebook registers. A C or Julia cell is parsed and
 checked, not run yet, and the menu says so (*C · not runnable yet*,
 *Julia · not runnable yet*); a cell that reads it is
@@ -114,6 +115,17 @@ of vectors, **20 million steps**, **10 s** and a nesting depth of **300**. A
 cell that goes past one is stopped with a message that says which. If the core
 crashes it is restarted, and the cell shows a message. The second core is
 about 4.5 MB larger.
+
+## Fortran cells
+
+Since playground v0.16.0 a Fortran cell runs in the page, in the second core,
+on [go-embedded-fortran](https://github.com/go-embedded-fortran/fortran)'s
+evaluator, with no compiler. Fortran's variables, procedures and modules
+persist from one Fortran cell to the next, and do not cross to the other
+languages. A cell is bounded: **200 million** DO iterations and calls, **10 s**
+and 16 MiB of output per stream; an endless `do` ends with a message that says
+so and the page stays usable. The second core is about 1.3 MB larger. See
+[Fortran cells](fortran.md).
 
 ## Limits
 

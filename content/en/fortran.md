@@ -62,8 +62,14 @@ initialisation.
 
 ## The playground
 
-The playground's WebAssembly core does not link the Fortran runtime yet.
-`fcells` builds for `js/wasm`; wiring it into the core is the playground's work.
+Fortran cells run in the browser playground, with no server and no compiler:
+the evaluator is linked into the playground's second WebAssembly core (the
+one it loads for a notebook with a Fortran, R, Ruby or Julia cell), through
+`fcells.Session.Eval`; the default core stays Go-only. The playground bounds a
+cell tighter than the kernel does: 200 million DO iterations and procedure
+calls, 10 s and 16 MiB of output per stream. An endless `do` ends with
+`step limit reached: the cell ran too many loop iterations and calls` and the
+page stays usable. The second core grew by 1.3 MB (0.28 MB gzipped).
 
 [examples/fortran.md](https://github.com/go-notebook/notebook/blob/main/examples/fortran.md)
 runs end to end: `notebook run examples/fortran.md`.
