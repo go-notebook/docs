@@ -195,11 +195,34 @@ hold up to twice its limit: its inputs plus its own allocations.&lt;/li&gt;
 &lt;p&gt;Between Julia cells every name is shared. The HTML page shows a Julia cell highlighted with
 go-rouge&amp;rsquo;s &lt;code&gt;julia&lt;/code&gt; lexer.&lt;/p&gt;
 &lt;h2 data-hextra-search-id="in-the-browser"&gt;In the browser&lt;span class="hx:absolute hx:-mt-20" id="in-the-browser"&gt;&lt;/span&gt;
-&lt;a href="#in-the-browser" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The &lt;a href="https://go-notebook.github.io/playground/" target="_blank" rel="noopener"&gt;playground&lt;/a&gt; does not run Julia
-cells: its WebAssembly core parses and checks them, the cell&amp;rsquo;s badge reads
-&lt;strong&gt;Julia — not runnable yet&lt;/strong&gt;, and the cell says &lt;em&gt;Julia cells run in
-go-notebook, not yet in the browser&lt;/em&gt;. The page treats Julia as check-only by
-language, so a Julia cell never reaches its Go evaluator. Running them there is
-a separate question, pending with go-embedded-julia.&lt;/p&gt;
-&lt;p&gt;Try the &lt;a href="https://go-notebook.github.io/playground/#4-julia" target="_blank" rel="noopener"&gt;Julia example notebook&lt;/a&gt;
-there for the checks; &lt;code&gt;notebook run&lt;/code&gt; and &lt;code&gt;notebook serve&lt;/code&gt; run the cells.&lt;/p&gt;</description></item></channel></rss>
+&lt;a href="#in-the-browser" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Since playground v0.18.0 the &lt;a href="https://go-notebook.github.io/playground/" target="_blank" rel="noopener"&gt;playground&lt;/a&gt;
+runs Julia cells, on go-embedded-julia v0.17.0 compiled to WebAssembly, with no
+external &lt;code&gt;julia&lt;/code&gt;. It is the heaviest runtime the page has, so it is &lt;strong&gt;loaded on
+first use&lt;/strong&gt;: a Julia cell&amp;rsquo;s badge reads &lt;em&gt;Julia · loads when run (~28 MB)&lt;/em&gt;, and
+Run downloads a third core (20 MB gzipped, the second core plus the interpreter)
+and the Base image (7.8 MB gzipped, checked against its pinned SHA-256 before it
+is decoded), then boots the kernel: about &lt;strong&gt;28 MB and about 20 s&lt;/strong&gt; the first
+time, shown on the cell as it loads, then cached by the browser. Opening a
+notebook, and running the cells above its first Julia cell, download nothing for
+Julia; the default, Ruby, R and Fortran cores never carry it. If the load fails
+(network, memory) the Julia cells say so and the other languages run.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Limits&lt;/strong&gt;: &lt;strong&gt;512 MiB&lt;/strong&gt; of arrays, &lt;strong&gt;20 million statements&lt;/strong&gt;, &lt;strong&gt;20 s&lt;/strong&gt; (R&amp;rsquo;s is
+10 s: a Julia cell compiles what it uses the first time) and 16 MiB of output.
+A cell that goes past one is stopped with a message that says which, and the
+worker is not killed. Deep recursion is a Julia &lt;code&gt;StackOverflowError&lt;/code&gt;, not a
+lost core.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Julia is isolated from Go in the page.&lt;/strong&gt; The variables that cross in
+&lt;code&gt;notebook run&lt;/code&gt; (above) do not cross in the page, in either direction: a cell
+that reads one fails with the other language&amp;rsquo;s own message and a note saying
+why. Julia variables persist from one Julia cell to the next.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Each run is a fresh kernel in a fresh worker.&lt;/strong&gt; go-embedded-julia cannot yet
+reset a kernel, and a second kernel in a process that has run Julia can fail
+(&lt;a href="https://github.com/go-embedded-julia/julia/issues/92" target="_blank" rel="noopener"&gt;go-embedded-julia#92&lt;/a&gt;),
+so after a run that executed a Julia cell the page replaces the Julia worker
+(about 8 s of boot, from the browser cache, while the page is idle). A &lt;code&gt;struct&lt;/code&gt;
+a notebook defines is not a redefinition the second time it runs. A
+&lt;code&gt;Kernel.Reset&lt;/code&gt; (&lt;a href="https://github.com/go-embedded-julia/julia/issues/93" target="_blank" rel="noopener"&gt;#93&lt;/a&gt;)
+would remove the restarts.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Try the &lt;a href="https://go-notebook.github.io/playground/#4-julia" target="_blank" rel="noopener"&gt;Julia example notebook&lt;/a&gt;.&lt;/p&gt;</description></item></channel></rss>

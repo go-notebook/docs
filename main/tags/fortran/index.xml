@@ -45,7 +45,8 @@ initialisation.&lt;/p&gt;
 &lt;h2 data-hextra-search-id="the-playground"&gt;The playground&lt;span class="hx:absolute hx:-mt-20" id="the-playground"&gt;&lt;/span&gt;
 &lt;a href="#the-playground" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Fortran cells run in the browser playground, with no server and no compiler:
 the evaluator is linked into the playground&amp;rsquo;s second WebAssembly core (the
-one it loads for a notebook with a Fortran, R, Ruby or Julia cell), through
+one it loads for a notebook with a Fortran, R or Ruby cell; a Julia cell loads a
+third core that has it too), through
 &lt;code&gt;fcells.Session.Eval&lt;/code&gt;; the default core stays Go-only. The playground bounds a
 cell tighter than the kernel does: 200 million DO iterations and procedure
 calls, 10 s and 16 MiB of output per stream. An endless &lt;code&gt;do&lt;/code&gt; ends with
