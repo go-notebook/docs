@@ -51,17 +51,20 @@ kernel keeps what it had.
 which is not part of the module. The first Julia cell a worker runs fetches the
 image of release v0.15.0 and loads it only if its SHA-256 is the one go-notebook
 pins; the verified file is kept in your user cache directory
-(`go-embedded-julia/images`) and checked again each time. The cold start is
-about a second. On a machine that is offline and has no cached image every
-Julia cell fails with *the Julia kernel could not start*, and the other cells
-run.
+(`go-embedded-julia/images`) and checked again each time. The fetch is bounded
+to five minutes and tried once. The cold start is about a second. On a machine
+that is offline and has no cached image every Julia cell of the run fails at
+once with *the Julia kernel could not start*, and the other cells run.
 
 **Limits.** A notebook may come from anyone, so each cell is bounded, as an R
-cell is: 30 seconds, 50 million statements, 512 MiB of array and dictionary
-elements, and 16 MiB of output per stream. A cell over a limit is stopped and
-says which; `--timeout` and `--memory` still apply, and cancelling the run
-stops a running cell. The kernel is sandboxed: its file system holds julia's own
-tree and its environment is empty.
+cell is: 30 seconds, 50 million statements, a memory budget of 512 MiB, and
+16 MiB of output per stream. The memory budget counts the elements of the arrays
+and dictionary tables a cell allocates, in total and garbage included, at 16
+bytes each. It is a floor, not the heap: a boxed value costs more, strings are
+not counted, and one array may not have more than 2^24 elements whatever the
+budget. A cell over a limit is stopped and says which, in the kernel's words;
+`--timeout` and `--memory` still apply to the worker. The kernel is sandboxed:
+its file system holds julia's own tree and its environment is empty.
 
 **Known limitations** (go-embedded-julia v0.15.0):
 
@@ -136,8 +139,10 @@ go-rouge's `julia` lexer.
 
 The [playground](https://go-notebook.github.io/playground/) does not run Julia
 cells: its WebAssembly core parses and checks them, the cell's badge reads
-**Julia — not runnable yet**, and the cells that read it are blocked. Running
-them there is a separate question, pending with go-embedded-julia.
+**Julia — not runnable yet**, and the cell says *Julia cells run in
+go-notebook, not yet in the browser*. The page treats Julia as check-only by
+language, so a Julia cell never reaches its Go evaluator. Running them there is
+a separate question, pending with go-embedded-julia.
 
 Try the [Julia example notebook](https://go-notebook.github.io/playground/#4-julia)
 there for the checks; `notebook run` and `notebook serve` run the cells.
