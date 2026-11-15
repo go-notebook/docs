@@ -64,7 +64,8 @@ initialisation.
 
 Fortran cells run in the browser playground, with no server and no compiler:
 the evaluator is linked into the playground's second WebAssembly core (the
-one it loads for a notebook with a Fortran, R, Ruby or Julia cell), through
+one it loads for a notebook with a Fortran, R or Ruby cell; a Julia cell loads a
+third core that has it too), through
 `fcells.Session.Eval`; the default core stays Go-only. The playground bounds a
 cell tighter than the kernel does: 200 million DO iterations and procedure
 calls, 10 s and 16 MiB of output per stream. An endless `do` ends with

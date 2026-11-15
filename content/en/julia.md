@@ -151,12 +151,34 @@ go-rouge's `julia` lexer.
 
 ## In the browser
 
-The [playground](https://go-notebook.github.io/playground/) does not run Julia
-cells: its WebAssembly core parses and checks them, the cell's badge reads
-**Julia — not runnable yet**, and the cell says *Julia cells run in
-go-notebook, not yet in the browser*. The page treats Julia as check-only by
-language, so a Julia cell never reaches its Go evaluator. Running them there is
-a separate question, pending with go-embedded-julia.
+Since playground v0.18.0 the [playground](https://go-notebook.github.io/playground/)
+runs Julia cells, on go-embedded-julia v0.17.0 compiled to WebAssembly, with no
+external `julia`. It is the heaviest runtime the page has, so it is **loaded on
+first use**: a Julia cell's badge reads *Julia · loads when run (~28 MB)*, and
+Run downloads a third core (20 MB gzipped, the second core plus the interpreter)
+and the Base image (7.8 MB gzipped, checked against its pinned SHA-256 before it
+is decoded), then boots the kernel: about **28 MB and about 20 s** the first
+time, shown on the cell as it loads, then cached by the browser. Opening a
+notebook, and running the cells above its first Julia cell, download nothing for
+Julia; the default, Ruby, R and Fortran cores never carry it. If the load fails
+(network, memory) the Julia cells say so and the other languages run.
 
-Try the [Julia example notebook](https://go-notebook.github.io/playground/#4-julia)
-there for the checks; `notebook run` and `notebook serve` run the cells.
+- **Limits**: **512 MiB** of arrays, **20 million statements**, **20 s** (R's is
+  10 s: a Julia cell compiles what it uses the first time) and 16 MiB of output.
+  A cell that goes past one is stopped with a message that says which, and the
+  worker is not killed. Deep recursion is a Julia `StackOverflowError`, not a
+  lost core.
+- **Julia is isolated from Go in the page.** The variables that cross in
+  `notebook run` (above) do not cross in the page, in either direction: a cell
+  that reads one fails with the other language's own message and a note saying
+  why. Julia variables persist from one Julia cell to the next.
+- **Each run is a fresh kernel in a fresh worker.** go-embedded-julia cannot yet
+  reset a kernel, and a second kernel in a process that has run Julia can fail
+  ([go-embedded-julia#92](https://github.com/go-embedded-julia/julia/issues/92)),
+  so after a run that executed a Julia cell the page replaces the Julia worker
+  (about 8 s of boot, from the browser cache, while the page is idle). A `struct`
+  a notebook defines is not a redefinition the second time it runs. A
+  `Kernel.Reset` ([#93](https://github.com/go-embedded-julia/julia/issues/93))
+  would remove the restarts.
+
+Try the [Julia example notebook](https://go-notebook.github.io/playground/#4-julia).
