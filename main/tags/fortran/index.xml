@@ -1,0 +1,49 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>go-notebook – Fortran</title><link>https://go-notebook.github.io/docs/main/tags/fortran/</link><description>Recent content in Fortran on go-notebook</description><generator>Hugo -- gohugo.io</generator><language>en</language><atom:link href="https://go-notebook.github.io/docs/main/tags/fortran/index.xml" rel="self" type="application/rss+xml"/><item><title>Fortran cells</title><link>https://go-notebook.github.io/docs/main/fortran/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://go-notebook.github.io/docs/main/fortran/</guid><description>
+&lt;p&gt;A &lt;code&gt;```fortran&lt;/code&gt; block is a Fortran cell (checked since go-notebook v0.16.0,
+run since v0.17.0). The Fortran is
+&lt;a href="https://github.com/go-embedded-fortran/fortran" target="_blank" rel="noopener"&gt;go-embedded-fortran&lt;/a&gt; (v0.17.0),
+a pure-Go Fortran: no external compiler is started. Its &lt;code&gt;sema&lt;/code&gt; session checks
+the cell and gives the names and the errors, its &lt;code&gt;eval.Session&lt;/code&gt; runs it. A
+cell is a program&amp;rsquo;s loose material and units alike: declarations and
+statements at top level, subroutines, functions, modules, derived types, even
+a &lt;code&gt;program&lt;/code&gt;. Free form, implicit typing off.&lt;/p&gt;
+&lt;h2 data-hextra-search-id="cells-share-one-session"&gt;Cells share one session&lt;span class="hx:absolute hx:-mt-20" id="cells-share-one-session"&gt;&lt;/span&gt;
+&lt;a href="#cells-share-one-session" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;A notebook with Fortran cells makes the worker import go-notebook&amp;rsquo;s &lt;code&gt;fcells&lt;/code&gt;
+package, which owns one &lt;code&gt;eval.Session&lt;/code&gt;. A Fortran cell sees the variables
+(with the values the earlier cells left), procedures, modules and derived
+types of the Fortran cells before it, in notebook order: &lt;code&gt;n = n + 1&lt;/code&gt; in a cell
+after the one that has &lt;code&gt;integer :: n = 3&lt;/code&gt; changes the same &lt;code&gt;n&lt;/code&gt;. A cell with an
+error leaves nothing behind for the next ones. Names are case-insensitive.
+Redefinition shadows in Fortran (a cell that runs again defines a new version
+that later cells see); between two cells of the notebook it is refused, as
+go-notebook&amp;rsquo;s rule of one definition per name.&lt;/p&gt;
+&lt;p&gt;The names a cell reads from earlier Fortran cells are its uses and give the
+graph its edges: a variable, a procedure, a derived type named in a
+declaration and a module named in &lt;code&gt;use&lt;/code&gt; all do.&lt;/p&gt;
+&lt;h2 data-hextra-search-id="fortran-variables-stay-in-fortran"&gt;Fortran variables stay in Fortran&lt;span class="hx:absolute hx:-mt-20" id="fortran-variables-stay-in-fortran"&gt;&lt;/span&gt;
+&lt;a href="#fortran-variables-stay-in-fortran" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;They are not shared with Go, Ruby, Julia, R or C cells in either direction yet
+(&lt;code&gt;analysis.Isolated&lt;/code&gt;, as R&amp;rsquo;s): a Go cell that reads a Fortran name finds it
+undefined, and a Fortran cell does not see a Go variable. A result reaches the
+reader as printed text; a cell shows text only.&lt;/p&gt;
+&lt;h2 data-hextra-search-id="output-and-errors"&gt;Output and errors&lt;span class="hx:absolute hx:-mt-20" id="output-and-errors"&gt;&lt;/span&gt;
+&lt;a href="#output-and-errors" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;What a cell prints is its output; standard error and the text of &lt;code&gt;STOP&lt;/code&gt; are its
+standard error; &lt;code&gt;STOP&lt;/code&gt; ends the cell, not the session. A refused cell or a
+failure is reported at &lt;code&gt;line L, column C&lt;/code&gt; of the cell, and a cell that fails
+while it runs keeps what it had done.&lt;/p&gt;
+&lt;h2 data-hextra-search-id="limits"&gt;Limits&lt;span class="hx:absolute hx:-mt-20" id="limits"&gt;&lt;/span&gt;
+&lt;a href="#limits" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;A notebook may come from anyone. A cell may make at most 2^32 DO iterations and
+procedure calls, run 30 s, and the evaluator&amp;rsquo;s own bounds apply: 2^28 elements
+per array, 2^26 characters per string, 2^15 nested calls. Output is cut at
+16 MiB per stream. The step count, not a timer, is what ends a loop in
+WebAssembly. &lt;code&gt;--timeout&lt;/code&gt; and &lt;code&gt;--memory&lt;/code&gt; apply as to every cell and kill the
+worker, session included. &lt;code&gt;INCLUDE&lt;/code&gt; is refused: no file is read.&lt;/p&gt;
+&lt;h2 data-hextra-search-id="what-the-evaluator-refuses"&gt;What the evaluator refuses&lt;span class="hx:absolute hx:-mt-20" id="what-the-evaluator-refuses"&gt;&lt;/span&gt;
+&lt;a href="#what-the-evaluator-refuses" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;It says so, positioned: type extension and &lt;code&gt;select type&lt;/code&gt;, pointer components,
+vector subscripts, &lt;code&gt;elsewhere&lt;/code&gt;, &lt;code&gt;dim=&lt;/code&gt; and &lt;code&gt;mask=&lt;/code&gt;, complex variables,
+character arrays, &lt;code&gt;read&lt;/code&gt; from a unit, and an array declared with an
+initialisation.&lt;/p&gt;
+&lt;h2 data-hextra-search-id="the-playground"&gt;The playground&lt;span class="hx:absolute hx:-mt-20" id="the-playground"&gt;&lt;/span&gt;
+&lt;a href="#the-playground" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The playground&amp;rsquo;s WebAssembly core does not link the Fortran runtime yet.
+&lt;code&gt;fcells&lt;/code&gt; builds for &lt;code&gt;js/wasm&lt;/code&gt;; wiring it into the core is the playground&amp;rsquo;s work.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://github.com/go-notebook/notebook/blob/main/examples/fortran.md" target="_blank" rel="noopener"&gt;examples/fortran.md&lt;/a&gt;
+runs end to end: &lt;code&gt;notebook run examples/fortran.md&lt;/code&gt;.&lt;/p&gt;</description></item></channel></rss>
