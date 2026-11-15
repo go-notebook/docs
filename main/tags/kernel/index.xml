@@ -177,8 +177,8 @@ invalidates whatever may read what it defined.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;Say whether the cells run.&lt;/strong&gt; &lt;code&gt;Run{Runs: true}&lt;/code&gt; runs them. Otherwise the
-language is &lt;strong&gt;check-only&lt;/strong&gt;: &lt;code&gt;NotRun&lt;/code&gt; is the cell&amp;rsquo;s failure (Julia&amp;rsquo;s names
-its milestone M3), and &lt;code&gt;Blocked&lt;/code&gt;, &lt;code&gt;Reads&lt;/code&gt; and &lt;code&gt;ReadsBlocked&lt;/code&gt; are the
+language is &lt;strong&gt;check-only&lt;/strong&gt;: &lt;code&gt;NotRun&lt;/code&gt; is the cell&amp;rsquo;s failure (C&amp;rsquo;s names
+its milestone M2), and &lt;code&gt;Blocked&lt;/code&gt;, &lt;code&gt;Reads&lt;/code&gt; and &lt;code&gt;ReadsBlocked&lt;/code&gt; are the
 messages of the cells that read it, directly or through other cells.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;

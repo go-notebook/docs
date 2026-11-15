@@ -1,14 +1,92 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>go-notebook – Julia</title><link>https://go-notebook.github.io/docs/main/tags/julia/</link><description>Recent content in Julia on go-notebook</description><generator>Hugo -- gohugo.io</generator><language>en</language><atom:link href="https://go-notebook.github.io/docs/main/tags/julia/index.xml" rel="self" type="application/rss+xml"/><item><title>Julia cells</title><link>https://go-notebook.github.io/docs/main/julia/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://go-notebook.github.io/docs/main/julia/</guid><description>
-&lt;p&gt;A &lt;code&gt;```julia&lt;/code&gt; block is a Julia cell (go-notebook v0.6.0 and later). Julia
-cells are &lt;strong&gt;parsed and checked, but not run yet&lt;/strong&gt;:
-&lt;a href="https://github.com/go-embedded-julia/julia" target="_blank" rel="noopener"&gt;go-embedded-julia&lt;/a&gt;, the pure-Go
-Julia these cells are written for, has a complete parser today, and its
-interpreter is being written. The
-&lt;a href="https://github.com/go-scikit/roadmap/blob/main/bib/julia.md" target="_blank" rel="noopener"&gt;plan&lt;/a&gt; has the
-milestones: M1, the parser, is done; M2 (lowering) is in progress; M3, the
-runtime, is the one that makes Julia cells run.&lt;/p&gt;
-&lt;h2 data-hextra-search-id="what-works"&gt;What works&lt;span class="hx:absolute hx:-mt-20" id="what-works"&gt;&lt;/span&gt;
-&lt;a href="#what-works" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Parsing.&lt;/strong&gt; A Julia cell is parsed by go-embedded-julia&amp;rsquo;s port of
+&lt;p&gt;A &lt;code&gt;```julia&lt;/code&gt; block is a Julia cell (parsed since go-notebook v0.6.0, &lt;strong&gt;run&lt;/strong&gt;
+in go-notebook v0.18.0).
+&lt;a href="https://github.com/go-embedded-julia/julia" target="_blank" rel="noopener"&gt;go-embedded-julia&lt;/a&gt; is the
+pure-Go Julia these cells run on: its parser for the names and the syntax
+errors, its interpreter (v0.15.0) for the running. No external &lt;code&gt;julia&lt;/code&gt; is
+started.&lt;/p&gt;
+&lt;h2 data-hextra-search-id="running"&gt;Running&lt;span class="hx:absolute hx:-mt-20" id="running"&gt;&lt;/span&gt;
+&lt;a href="#running" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The cells of a notebook share one Julia kernel, in the worker. A global, a
+function or a struct a cell defines is there in the next cell; what a cell
+prints is its own output, and the value of its last expression is shown as the
+Julia REPL shows it, unless it is &lt;code&gt;nothing&lt;/code&gt; or the cell ends in a semicolon.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-markdown" data-lang="markdown"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;```julia
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;square&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;total&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;square&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;```&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;```julia
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;println&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#34;total = &amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;total&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;total&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;```&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-console" data-lang="console"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="gp"&gt;$&lt;/span&gt; notebook run julia.md
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;── cell 0 (line 4, ran in 1.102209s)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt; 30
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;── cell 1 (line 9, ran in 1.478ms)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt; total = 30
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt; 31
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;(A real transcript, from the change that became go-notebook v0.18.0, on an Apple M4 Max; the
+first cell pays the kernel&amp;rsquo;s cold start.)&lt;/p&gt;
+&lt;p&gt;An exception fails the cell with julia&amp;rsquo;s text of it after &lt;code&gt;ERROR:&lt;/code&gt;, after the
+output the cell wrote before it; the cells that read it do not run, and the
+kernel keeps what it had.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The image.&lt;/strong&gt; The kernel boots from go-embedded-julia&amp;rsquo;s prebuilt Base image,
+which is not part of the module. The first Julia cell a worker runs fetches the
+image of release v0.15.0 and loads it only if its SHA-256 is the one go-notebook
+pins; the verified file is kept in your user cache directory
+(&lt;code&gt;go-embedded-julia/images&lt;/code&gt;) and checked again each time. The fetch is bounded
+to five minutes and tried once. The cold start is about a second. On a machine
+that is offline and has no cached image every Julia cell of the run fails at
+once with &lt;em&gt;the Julia kernel could not start&lt;/em&gt;, and the other cells run.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Limits.&lt;/strong&gt; A notebook may come from anyone, so each cell is bounded, as an R
+cell is: 30 seconds, 50 million statements, a memory budget of 512 MiB, and
+16 MiB of output per stream. The memory budget counts the elements of the arrays
+and dictionary tables a cell allocates, in total and garbage included, at 16
+bytes each. It is a floor, not the heap: a boxed value costs more, strings are
+not counted, and one array may not have more than 2^24 elements whatever the
+budget. A cell over a limit is stopped and says which, in the kernel&amp;rsquo;s words;
+&lt;code&gt;--timeout&lt;/code&gt; and &lt;code&gt;--memory&lt;/code&gt; still apply to the worker. The kernel is sandboxed:
+its file system holds julia&amp;rsquo;s own tree and its environment is empty.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Known limitations&lt;/strong&gt; (go-embedded-julia v0.15.0):&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;At the top level of a cell, a loop that updates a global raises
+&lt;code&gt;UndefVarError&lt;/code&gt;, where julia 1.12&amp;rsquo;s REPL updates it
+(&lt;a href="https://github.com/go-embedded-julia/julia/issues/54" target="_blank" rel="noopener"&gt;#54&lt;/a&gt;). Put the loop in
+a function.&lt;/li&gt;
+&lt;li&gt;Some exceptions, &lt;code&gt;MethodError&lt;/code&gt; among them, show as their Go representation,
+not as julia&amp;rsquo;s message
+(&lt;a href="https://github.com/go-embedded-julia/julia/issues/55" target="_blank" rel="noopener"&gt;#55&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;A process loads one image release
+(&lt;a href="https://github.com/go-embedded-julia/julia/issues/49" target="_blank" rel="noopener"&gt;#49&lt;/a&gt;).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 data-hextra-search-id="parsing-and-names"&gt;Parsing and names&lt;span class="hx:absolute hx:-mt-20" id="parsing-and-names"&gt;&lt;/span&gt;
+&lt;a href="#parsing-and-names" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The names below are the same whether a cell runs or not.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Parsing.&lt;/strong&gt; A Julia cell is parsed by go-embedded-julia&amp;rsquo;s port of
 JuliaSyntax, the parser julia 1.12 ships, which gives the same &lt;code&gt;Expr&lt;/code&gt; trees as
 julia on its whole test corpus. A syntax error is reported at the notebook&amp;rsquo;s
 line and column, with julia&amp;rsquo;s own message:&lt;/p&gt;
@@ -97,82 +175,18 @@ definition to keyword defaults, &lt;code&gt;where&lt;/code&gt; bounds and nested
 lowered by julia 1.12.6 (through &lt;code&gt;REPL.softscope&lt;/code&gt;, the soft-scope rule of the
 REPL), and the globals julia declares and reads are the names go-notebook
 finds.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Across languages.&lt;/strong&gt; A Julia cell&amp;rsquo;s variables are seen by Go and Ruby cells,
-and a Julia cell sees theirs, as between Ruby and Go (see
-&lt;a href="https://go-notebook.github.io/docs/main/ruby/"&gt;Ruby cells&lt;/a&gt;); functions, macros, constants and types stay in Julia.&lt;/p&gt;
-&lt;h2 data-hextra-search-id="what-does-not-work-yet-running"&gt;What does not work yet: running&lt;span class="hx:absolute hx:-mt-20" id="what-does-not-work-yet-running"&gt;&lt;/span&gt;
-&lt;a href="#what-does-not-work-yet-running" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Running a Julia cell fails, clearly, and the cells that need it say why:&lt;/p&gt;
-&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-markdown" data-lang="markdown"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;```go
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nx"&gt;n&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;:=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="w"&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;```&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;```julia
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;xs&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;total&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;xs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;```&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;```go
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nx"&gt;total&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="w"&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;```&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;```go
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nx"&gt;n&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="w"&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;```&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
-&lt;button
-class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
-title="Copy code"
-aria-label="Copy code"
-data-copied-label="Copied!"
-&gt;
-&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;/button&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-console" data-lang="console"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="gp"&gt;$&lt;/span&gt; notebook run julia.md
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;── cell 0 (line 4, ran in 11µs)
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;── cell 1 (line 8, not run)
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt; error: Julia cells are parsed and checked, but not run yet: execution arrives with go-embedded-julia&amp;#39;s runtime (milestone M3)
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;── cell 2 (line 13, not run)
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt; error: blocked: it depends on cell 1, a Julia cell, and Julia cells are not run yet
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;── cell 3 (line 17, ran in 28µs)
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt; 20
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;notebook: 2 cell(s) failed
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
-&lt;button
-class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
-title="Copy code"
-aria-label="Copy code"
-data-copied-label="Copied!"
-&gt;
-&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;/button&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;p&gt;(Real transcripts, from go-notebook&amp;rsquo;s main branch on an Apple M4 Max.)&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;a Julia cell never runs, and &lt;code&gt;notebook run&lt;/code&gt; exits non-zero;&lt;/li&gt;
-&lt;li&gt;every cell that reads what a Julia cell defines — directly or through other
-cells, in any language — is &lt;strong&gt;blocked&lt;/strong&gt;, not silently skipped;&lt;/li&gt;
-&lt;li&gt;the other cells run as usual.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;go-notebook starts no external &lt;code&gt;julia&lt;/code&gt;: the cells will run on
-go-embedded-julia&amp;rsquo;s own runtime, in the same worker as Go and Ruby cells,
-when it exists. The HTML page shows a Julia cell&amp;rsquo;s source uncoloured (go-rouge
-has no Julia lexer yet).&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Across languages.&lt;/strong&gt; Julia variables stay in Julia, as R&amp;rsquo;s do: they are not
+shared with Go, Ruby, R, C or Fortran cells in either direction yet. A Go cell
+that reads a Julia name finds it undefined, and a Julia cell does not see a Go
+variable; a Julia result reaches the reader as printed text. Between Julia
+cells every name is shared. The HTML page shows a Julia cell highlighted with
+go-rouge&amp;rsquo;s &lt;code&gt;julia&lt;/code&gt; lexer.&lt;/p&gt;
 &lt;h2 data-hextra-search-id="in-the-browser"&gt;In the browser&lt;span class="hx:absolute hx:-mt-20" id="in-the-browser"&gt;&lt;/span&gt;
-&lt;a href="#in-the-browser" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The &lt;a href="https://go-notebook.github.io/playground/" target="_blank" rel="noopener"&gt;playground&lt;/a&gt; parses and checks
-Julia cells in the same way, in WebAssembly: a syntax error is shown at its
-line, the cell&amp;rsquo;s badge reads &lt;strong&gt;Julia — not runnable yet&lt;/strong&gt;, and the cells that
-read it are blocked. A Julia cell that parses is shown as &lt;em&gt;not run&lt;/em&gt;, and a cell
-that reads it as &lt;em&gt;blocked&lt;/em&gt;, in the page&amp;rsquo;s neutral style and not as failures
-(the playground&amp;rsquo;s results carry a typed &lt;code&gt;status&lt;/code&gt;, &lt;code&gt;notrun&lt;/code&gt; or &lt;code&gt;blocked&lt;/code&gt;, and
-its site build accepts exactly those two for a Julia example, while a syntax
-error still fails it).&lt;/p&gt;
-&lt;p&gt;Try it: the &lt;a href="https://go-notebook.github.io/playground/#4-julia" target="_blank" rel="noopener"&gt;Julia example notebook&lt;/a&gt;
-has a Julia cell, a Go cell blocked on it and a Go cell that runs alone, and its
-prose says that Julia cells are checked, not run, until
-&lt;a href="https://go-embedded-julia.github.io/" target="_blank" rel="noopener"&gt;go-embedded-julia&lt;/a&gt;&amp;rsquo;s runtime lands.&lt;/p&gt;</description></item></channel></rss>
+&lt;a href="#in-the-browser" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The &lt;a href="https://go-notebook.github.io/playground/" target="_blank" rel="noopener"&gt;playground&lt;/a&gt; does not run Julia
+cells: its WebAssembly core parses and checks them, the cell&amp;rsquo;s badge reads
+&lt;strong&gt;Julia — not runnable yet&lt;/strong&gt;, and the cell says &lt;em&gt;Julia cells run in
+go-notebook, not yet in the browser&lt;/em&gt;. The page treats Julia as check-only by
+language, so a Julia cell never reaches its Go evaluator. Running them there is
+a separate question, pending with go-embedded-julia.&lt;/p&gt;
+&lt;p&gt;Try the &lt;a href="https://go-notebook.github.io/playground/#4-julia" target="_blank" rel="noopener"&gt;Julia example notebook&lt;/a&gt;
+there for the checks; &lt;code&gt;notebook run&lt;/code&gt; and &lt;code&gt;notebook serve&lt;/code&gt; run the cells.&lt;/p&gt;</description></item></channel></rss>
