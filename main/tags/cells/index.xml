@@ -843,8 +843,14 @@ vector subscripts, &lt;code&gt;elsewhere&lt;/code&gt;, &lt;code&gt;dim=&lt;/code
 character arrays, &lt;code&gt;read&lt;/code&gt; from a unit, and an array declared with an
 initialisation.&lt;/p&gt;
 &lt;h2 data-hextra-search-id="the-playground"&gt;The playground&lt;span class="hx:absolute hx:-mt-20" id="the-playground"&gt;&lt;/span&gt;
-&lt;a href="#the-playground" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The playground&amp;rsquo;s WebAssembly core does not link the Fortran runtime yet.
-&lt;code&gt;fcells&lt;/code&gt; builds for &lt;code&gt;js/wasm&lt;/code&gt;; wiring it into the core is the playground&amp;rsquo;s work.&lt;/p&gt;
+&lt;a href="#the-playground" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Fortran cells run in the browser playground, with no server and no compiler:
+the evaluator is linked into the playground&amp;rsquo;s second WebAssembly core (the
+one it loads for a notebook with a Fortran, R, Ruby or Julia cell), through
+&lt;code&gt;fcells.Session.Eval&lt;/code&gt;; the default core stays Go-only. The playground bounds a
+cell tighter than the kernel does: 200 million DO iterations and procedure
+calls, 10 s and 16 MiB of output per stream. An endless &lt;code&gt;do&lt;/code&gt; ends with
+&lt;code&gt;step limit reached: the cell ran too many loop iterations and calls&lt;/code&gt; and the
+page stays usable. The second core grew by 1.3 MB (0.28 MB gzipped).&lt;/p&gt;
 &lt;p&gt;&lt;a href="https://github.com/go-notebook/notebook/blob/main/examples/fortran.md" target="_blank" rel="noopener"&gt;examples/fortran.md&lt;/a&gt;
 runs end to end: &lt;code&gt;notebook run examples/fortran.md&lt;/code&gt;.&lt;/p&gt;</description></item><item><title>Adding a cell language</title><link>https://go-notebook.github.io/docs/main/adding-a-language/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://go-notebook.github.io/docs/main/adding-a-language/</guid><description>
 &lt;p&gt;A cell language is &lt;strong&gt;one registered implementation&lt;/strong&gt; of
