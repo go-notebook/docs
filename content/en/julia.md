@@ -6,10 +6,10 @@ tags: [cells, julia]
 ---
 
 A ` ```julia ` block is a Julia cell (parsed since go-notebook v0.6.0, **run**
-in go-notebook v0.18.0).
+in go-notebook v0.18.0; on go-embedded-julia v0.17.0 since v0.19.0).
 [go-embedded-julia](https://github.com/go-embedded-julia/julia) is the
 pure-Go Julia these cells run on: its parser for the names and the syntax
-errors, its interpreter (v0.15.0) for the running. No external `julia` is
+errors, its interpreter (v0.17.0) for the running. No external `julia` is
 started.
 
 ## Running
@@ -49,8 +49,8 @@ kernel keeps what it had.
 
 **The image.** The kernel boots from go-embedded-julia's prebuilt Base image,
 which is not part of the module. The first Julia cell a worker runs fetches the
-image of release v0.15.0 and loads it only if its SHA-256 is the one go-notebook
-pins; the verified file is kept in your user cache directory
+image of release v0.17.0 and loads it only if its SHA-256 is the one go-notebook
+pins (`d243d2b748afb7d331227195d835357b6502184bedcdc4bcc296854276c2f6ec`); the verified file is kept in your user cache directory
 (`go-embedded-julia/images`) and checked again each time. The fetch is bounded
 to five minutes and tried once. The cold start is about a second. On a machine
 that is offline and has no cached image every Julia cell of the run fails at
@@ -66,15 +66,18 @@ budget. A cell over a limit is stopped and says which, in the kernel's words;
 `--timeout` and `--memory` still apply to the worker. The kernel is sandboxed:
 its file system holds julia's own tree and its environment is empty.
 
-**Known limitations** (go-embedded-julia v0.15.0):
+**Soft scope.** As in IJulia, a loop at the top level that updates a global
+works: `s=0; for i in 1:10; s+=i; end` gives 55. A `MethodError` shows Julia's
+own text (no method matching, closest candidates).
 
-- At the top level of a cell, a loop that updates a global raises
-  `UndefVarError`, where julia 1.12's REPL updates it
-  ([#54](https://github.com/go-embedded-julia/julia/issues/54)). Put the loop in
-  a function.
-- Some exceptions, `MethodError` among them, show as their Go representation,
-  not as julia's message
-  ([#55](https://github.com/go-embedded-julia/julia/issues/55)).
+**Known limitations** (go-embedded-julia v0.17.0):
+
+- On the Base image, a Float64 `A * x` needs BLAS
+  ([#67](https://github.com/go-embedded-julia/julia/issues/67)), and a non-ASCII
+  `uppercase` needs utf8proc
+  ([#65](https://github.com/go-embedded-julia/julia/issues/65)).
+- `Get` refuses an n×0 matrix
+  ([#76](https://github.com/go-embedded-julia/julia/issues/76)).
 - A process loads one image release
   ([#49](https://github.com/go-embedded-julia/julia/issues/49)).
 
@@ -128,11 +131,22 @@ lowered by julia 1.12.6 (through `REPL.softscope`, the soft-scope rule of the
 REPL), and the globals julia declares and reads are the names go-notebook
 finds.
 
-**Across languages.** Julia variables stay in Julia, as R's do: they are not
-shared with Go, Ruby, R, C or Fortran cells in either direction yet. A Go cell
-that reads a Julia name finds it undefined, and a Julia cell does not see a Go
-variable; a Julia result reaches the reader as printed text. Between Julia
-cells every name is shared. The HTML page shows a Julia cell highlighted with
+**Across languages.** Since go-notebook v0.19.0, Julia variables cross with Go
+cells in both directions (`Kernel.Get`/`Set`), and Julia is no longer
+`Isolated`: a Go cell that reads a Julia name depends on the Julia cell. This
+breaks v0.18.0, where Julia variables stayed in Julia.
+
+- Types that cross: Int64, Float64 (bits kept, NaN payloads and -0.0
+  included), Bool, String, and Vector and Matrix of Float64 or Int64
+  (column-major). Go `int` and `[]int` cross as Int64.
+- A Julia value of another type stays in Julia; the Go cell that reads it is
+  deferred, naming the type.
+- A Go value Julia cannot take fails the Julia cell that reads it.
+- Inputs are measured before any copy: one array has at most 2^24 elements, and
+  a cell's inputs together are at most its memory limit. A cell can therefore
+  hold up to twice its limit: its inputs plus its own allocations.
+
+Between Julia cells every name is shared. The HTML page shows a Julia cell highlighted with
 go-rouge's `julia` lexer.
 
 ## In the browser
