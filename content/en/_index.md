@@ -8,10 +8,9 @@ description: "Go notebooks with native speed, kept values and a reproducible ord
 ---
 
 **A notebook is a Markdown file whose ` ```go ` blocks are cells**, and its
-` ```ruby ` blocks too ([Ruby cells](ruby.md)); ` ```r ` and ` ```fortran `
+` ```ruby ` blocks too ([Ruby cells](ruby.md)); ` ```r `, ` ```fortran ` and ` ```julia `
 blocks run in a session of their own ([R cells](r.md),
-[Fortran cells](fortran.md)); ` ```julia ` blocks are parsed and checked, not
-run yet ([Julia cells](julia.md)). The go-notebook kernel:
+[Fortran cells](fortran.md), [Julia cells](julia.md)). The go-notebook kernel:
 
 - **compiles it** into a real Go program, so cells run at native speed;
 - **orders the cells by what they use**, worked out from the code itself as
@@ -84,7 +83,7 @@ is not summed again. (A real transcript, from `notebook` built at main
 | [Notebooks](notebooks.md) | what a notebook file is, and why it is Markdown |
 | [Cells](cells.md) | the rules a cell follows, and the errors that enforce them |
 | [Ruby cells](ruby.md) | Ruby cells with the go-scikit bindings, how values cross between Go and Ruby, and the limits |
-| [Julia cells](julia.md) | Julia cells: parsed and checked with go-embedded-julia's parser, their names in the graph — not run yet |
+| [Julia cells](julia.md) | Julia cells: parsed with go-embedded-julia's parser, run by its interpreter in one kernel, their names in the graph |
 | [R cells](r.md) | R cells: parsed with go-embedded-r's parser and run on its evaluator in one shared environment, their names in the graph, dynamic cells, limits |
 | [Fortran cells](fortran.md) | Fortran cells: run on go-embedded-fortran in one session shared by the Fortran cells, kept apart from the other languages, and their limits |
 | [Using the playground](playground.md) | the browser playground: editing, adding, running, switching language, deleting and moving cells, with Jupyter's keys; its limits |

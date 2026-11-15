@@ -45,8 +45,8 @@ type Names struct {
    depend on **it**, so it runs after anything before it changed and
    invalidates whatever may read what it defined.
 4. **Say whether the cells run.** `Run{Runs: true}` runs them. Otherwise the
-   language is **check-only**: `NotRun` is the cell's failure (Julia's names
-   its milestone M3), and `Blocked`, `Reads` and `ReadsBlocked` are the
+   language is **check-only**: `NotRun` is the cell's failure (C's names
+   its milestone M2), and `Blocked`, `Reads` and `ReadsBlocked` are the
    messages of the cells that read it, directly or through other cells.
 5. **Optional capabilities**, found by type assertion:
 
