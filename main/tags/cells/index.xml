@@ -449,10 +449,10 @@ before it reaches the page. Try the Ruby examples on
 &lt;a href="https://go-statistics.github.io/playground/#5-ruby" target="_blank" rel="noopener"&gt;go-statistics&lt;/a&gt; and
 &lt;a href="https://go-numerics.github.io/playground/#6-ruby" target="_blank" rel="noopener"&gt;go-numerics&lt;/a&gt;.&lt;/p&gt;</description></item><item><title>Julia cells</title><link>https://go-notebook.github.io/docs/main/julia/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://go-notebook.github.io/docs/main/julia/</guid><description>
 &lt;p&gt;A &lt;code&gt;```julia&lt;/code&gt; block is a Julia cell (parsed since go-notebook v0.6.0, &lt;strong&gt;run&lt;/strong&gt;
-in go-notebook v0.18.0; on go-embedded-julia v0.17.0 since v0.19.0).
+in go-notebook v0.18.0; on go-embedded-julia v0.20.0 since v0.21.2).
 &lt;a href="https://github.com/go-embedded-julia/julia" target="_blank" rel="noopener"&gt;go-embedded-julia&lt;/a&gt; is the
 pure-Go Julia these cells run on: its parser for the names and the syntax
-errors, its interpreter (v0.17.0) for the running. No external &lt;code&gt;julia&lt;/code&gt; is
+errors, its interpreter (v0.20.0) for the running. No external &lt;code&gt;julia&lt;/code&gt; is
 started.&lt;/p&gt;
 &lt;h2 data-hextra-search-id="running"&gt;Running&lt;span class="hx:absolute hx:-mt-20" id="running"&gt;&lt;/span&gt;
 &lt;a href="#running" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The cells of a notebook share one Julia kernel, in the worker. A global, a
@@ -524,14 +524,11 @@ its file system holds julia&amp;rsquo;s own tree and its environment is empty.&l
 &lt;p&gt;&lt;strong&gt;Soft scope.&lt;/strong&gt; As in IJulia, a loop at the top level that updates a global
 works: &lt;code&gt;s=0; for i in 1:10; s+=i; end&lt;/code&gt; gives 55. A &lt;code&gt;MethodError&lt;/code&gt; shows Julia&amp;rsquo;s
 own text (no method matching, closest candidates).&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Known limitations&lt;/strong&gt; (go-embedded-julia v0.17.0):&lt;/p&gt;
+&lt;p&gt;Since go-notebook v0.21.0, a Float64 &lt;code&gt;A * x&lt;/code&gt; runs through
+&lt;a href="https://github.com/go-blas/blas" target="_blank" rel="noopener"&gt;go-blas&lt;/a&gt;, a non-ASCII &lt;code&gt;uppercase&lt;/code&gt;,
+&lt;code&gt;lowercase&lt;/code&gt; or &lt;code&gt;normalize&lt;/code&gt; works, and an n×0 matrix crosses.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Known limitations&lt;/strong&gt; (go-embedded-julia v0.20.0):&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;On the Base image, a Float64 &lt;code&gt;A * x&lt;/code&gt; needs BLAS
-(&lt;a href="https://github.com/go-embedded-julia/julia/issues/67" target="_blank" rel="noopener"&gt;#67&lt;/a&gt;), and a non-ASCII
-&lt;code&gt;uppercase&lt;/code&gt; needs utf8proc
-(&lt;a href="https://github.com/go-embedded-julia/julia/issues/65" target="_blank" rel="noopener"&gt;#65&lt;/a&gt;).&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Get&lt;/code&gt; refuses an n×0 matrix
-(&lt;a href="https://github.com/go-embedded-julia/julia/issues/76" target="_blank" rel="noopener"&gt;#76&lt;/a&gt;).&lt;/li&gt;
 &lt;li&gt;A process loads one image release
 (&lt;a href="https://github.com/go-embedded-julia/julia/issues/49" target="_blank" rel="noopener"&gt;#49&lt;/a&gt;).&lt;/li&gt;
 &lt;/ul&gt;
@@ -645,7 +642,7 @@ hold up to twice its limit: its inputs plus its own allocations.&lt;/li&gt;
 go-rouge&amp;rsquo;s &lt;code&gt;julia&lt;/code&gt; lexer.&lt;/p&gt;
 &lt;h2 data-hextra-search-id="in-the-browser"&gt;In the browser&lt;span class="hx:absolute hx:-mt-20" id="in-the-browser"&gt;&lt;/span&gt;
 &lt;a href="#in-the-browser" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Since playground v0.18.0 the &lt;a href="https://go-notebook.github.io/playground/" target="_blank" rel="noopener"&gt;playground&lt;/a&gt;
-runs Julia cells, on go-embedded-julia v0.17.0 compiled to WebAssembly, with no
+runs Julia cells (playground v0.21.0: go-embedded-julia v0.20.0) compiled to WebAssembly, with no
 external &lt;code&gt;julia&lt;/code&gt;. It is the heaviest runtime the page has, so it is &lt;strong&gt;loaded on
 first use&lt;/strong&gt;: a Julia cell&amp;rsquo;s badge reads &lt;em&gt;Julia · loads when run (~28 MB)&lt;/em&gt;, and
 Run downloads a third core (20 MB gzipped, the second core plus the interpreter)
@@ -665,14 +662,15 @@ lost core.&lt;/li&gt;
 &lt;code&gt;notebook run&lt;/code&gt; (above) do not cross in the page, in either direction: a cell
 that reads one fails with the other language&amp;rsquo;s own message and a note saying
 why. Julia variables persist from one Julia cell to the next.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Each run is a fresh kernel in a fresh worker.&lt;/strong&gt; go-embedded-julia cannot yet
-reset a kernel, and a second kernel in a process that has run Julia can fail
-(&lt;a href="https://github.com/go-embedded-julia/julia/issues/92" target="_blank" rel="noopener"&gt;go-embedded-julia#92&lt;/a&gt;),
-so after a run that executed a Julia cell the page replaces the Julia worker
-(about 8 s of boot, from the browser cache, while the page is idle). A &lt;code&gt;struct&lt;/code&gt;
-a notebook defines is not a redefinition the second time it runs. A
-&lt;code&gt;Kernel.Reset&lt;/code&gt; (&lt;a href="https://github.com/go-embedded-julia/julia/issues/93" target="_blank" rel="noopener"&gt;#93&lt;/a&gt;)
-would remove the restarts.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Each run starts from a reset kernel.&lt;/strong&gt; Since playground v0.21.0, a run resets
+the kernel the page booted (&lt;code&gt;Kernel.Reset&lt;/code&gt;,
+&lt;a href="https://github.com/go-embedded-julia/julia/issues/93" target="_blank" rel="noopener"&gt;go-embedded-julia#93&lt;/a&gt;)
+instead of replacing the worker. A rerun takes 25 to 60 ms, and over 30 runs
+the page&amp;rsquo;s memory stays flat. The reset undoes what the earlier run changed,
+and it stops the tasks and timers that run started, so an &lt;code&gt;@async&lt;/code&gt; loop or a
+periodic &lt;code&gt;Timer&lt;/code&gt; never prints into the next run. A &lt;code&gt;struct&lt;/code&gt; a notebook defines
+is not a redefinition the second time it runs. The worker is replaced only
+when a reset has to load the image again or fails.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Try the &lt;a href="https://go-notebook.github.io/playground/#4-julia" target="_blank" rel="noopener"&gt;Julia example notebook&lt;/a&gt;.&lt;/p&gt;</description></item><item><title>R cells</title><link>https://go-notebook.github.io/docs/main/r/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://go-notebook.github.io/docs/main/r/</guid><description>
 &lt;p&gt;A &lt;code&gt;```r&lt;/code&gt; block is an R cell (parsed since go-notebook v0.8.0, run since
