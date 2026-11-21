@@ -6,10 +6,10 @@ tags: [cells, julia]
 ---
 
 A ` ```julia ` block is a Julia cell (parsed since go-notebook v0.6.0, **run**
-in go-notebook v0.18.0; on go-embedded-julia v0.17.0 since v0.19.0).
+in go-notebook v0.18.0; on go-embedded-julia v0.20.0 since v0.21.2).
 [go-embedded-julia](https://github.com/go-embedded-julia/julia) is the
 pure-Go Julia these cells run on: its parser for the names and the syntax
-errors, its interpreter (v0.17.0) for the running. No external `julia` is
+errors, its interpreter (v0.20.0) for the running. No external `julia` is
 started.
 
 ## Running
@@ -70,14 +70,12 @@ its file system holds julia's own tree and its environment is empty.
 works: `s=0; for i in 1:10; s+=i; end` gives 55. A `MethodError` shows Julia's
 own text (no method matching, closest candidates).
 
-**Known limitations** (go-embedded-julia v0.17.0):
+Since go-notebook v0.21.0, a Float64 `A * x` runs through
+[go-blas](https://github.com/go-blas/blas), a non-ASCII `uppercase`,
+`lowercase` or `normalize` works, and an n×0 matrix crosses.
 
-- On the Base image, a Float64 `A * x` needs BLAS
-  ([#67](https://github.com/go-embedded-julia/julia/issues/67)), and a non-ASCII
-  `uppercase` needs utf8proc
-  ([#65](https://github.com/go-embedded-julia/julia/issues/65)).
-- `Get` refuses an n×0 matrix
-  ([#76](https://github.com/go-embedded-julia/julia/issues/76)).
+**Known limitations** (go-embedded-julia v0.20.0):
+
 - A process loads one image release
   ([#49](https://github.com/go-embedded-julia/julia/issues/49)).
 
@@ -152,7 +150,7 @@ go-rouge's `julia` lexer.
 ## In the browser
 
 Since playground v0.18.0 the [playground](https://go-notebook.github.io/playground/)
-runs Julia cells, on go-embedded-julia v0.17.0 compiled to WebAssembly, with no
+runs Julia cells (playground v0.21.0: go-embedded-julia v0.20.0) compiled to WebAssembly, with no
 external `julia`. It is the heaviest runtime the page has, so it is **loaded on
 first use**: a Julia cell's badge reads *Julia · loads when run (~28 MB)*, and
 Run downloads a third core (20 MB gzipped, the second core plus the interpreter)
@@ -172,13 +170,14 @@ Julia; the default, Ruby, R and Fortran cores never carry it. If the load fails
   `notebook run` (above) do not cross in the page, in either direction: a cell
   that reads one fails with the other language's own message and a note saying
   why. Julia variables persist from one Julia cell to the next.
-- **Each run is a fresh kernel in a fresh worker.** go-embedded-julia cannot yet
-  reset a kernel, and a second kernel in a process that has run Julia can fail
-  ([go-embedded-julia#92](https://github.com/go-embedded-julia/julia/issues/92)),
-  so after a run that executed a Julia cell the page replaces the Julia worker
-  (about 8 s of boot, from the browser cache, while the page is idle). A `struct`
-  a notebook defines is not a redefinition the second time it runs. A
-  `Kernel.Reset` ([#93](https://github.com/go-embedded-julia/julia/issues/93))
-  would remove the restarts.
+- **Each run starts from a reset kernel.** Since playground v0.21.0, a run resets
+  the kernel the page booted (`Kernel.Reset`,
+  [go-embedded-julia#93](https://github.com/go-embedded-julia/julia/issues/93))
+  instead of replacing the worker. A rerun takes 25 to 60 ms, and over 30 runs
+  the page's memory stays flat. The reset undoes what the earlier run changed,
+  and it stops the tasks and timers that run started, so an `@async` loop or a
+  periodic `Timer` never prints into the next run. A `struct` a notebook defines
+  is not a redefinition the second time it runs. The worker is replaced only
+  when a reset has to load the image again or fails.
 
 Try the [Julia example notebook](https://go-notebook.github.io/playground/#4-julia).
