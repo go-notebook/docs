@@ -72,5 +72,13 @@ calls, 10 s and 16 MiB of output per stream. An endless `do` ends with
 `step limit reached: the cell ran too many loop iterations and calls` and the
 page stays usable. The second core grew by 1.3 MB (0.28 MB gzipped).
 
+Since playground v0.22.0 (go-embedded-fortran v0.31.0), constructs the
+evaluator used to run with wrong results are refused with a message instead:
+types with final procedures or generic assignment, operator or I/O bindings,
+assumed-length `character(*)` function results, and `value` on non-scalar or
+derived dummies. The same release adds `Gw.0` output, re-initialised
+`intent(out)` derived dummies, BOZ conversions as bits, and the declared bounds
+of explicit-shape dummies.
+
 [examples/fortran.md](https://github.com/go-notebook/notebook/blob/main/examples/fortran.md)
 runs end to end: `notebook run examples/fortran.md`.
