@@ -1,9 +1,9 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>go-notebook – Julia</title><link>https://go-notebook.github.io/docs/main/tags/julia/</link><description>Recent content in Julia on go-notebook</description><generator>Hugo -- gohugo.io</generator><language>en</language><atom:link href="https://go-notebook.github.io/docs/main/tags/julia/index.xml" rel="self" type="application/rss+xml"/><item><title>Julia cells</title><link>https://go-notebook.github.io/docs/main/julia/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://go-notebook.github.io/docs/main/julia/</guid><description>
 &lt;p&gt;A &lt;code&gt;```julia&lt;/code&gt; block is a Julia cell (parsed since go-notebook v0.6.0, &lt;strong&gt;run&lt;/strong&gt;
-in go-notebook v0.18.0; on go-embedded-julia v0.20.0 since v0.21.2).
+in go-notebook v0.18.0; on go-embedded-julia v0.22.0 since v0.22.0).
 &lt;a href="https://github.com/go-embedded-julia/julia" target="_blank" rel="noopener"&gt;go-embedded-julia&lt;/a&gt; is the
 pure-Go Julia these cells run on: its parser for the names and the syntax
-errors, its interpreter (v0.20.0) for the running. No external &lt;code&gt;julia&lt;/code&gt; is
+errors, its interpreter (v0.22.0) for the running. No external &lt;code&gt;julia&lt;/code&gt; is
 started.&lt;/p&gt;
 &lt;h2 data-hextra-search-id="running"&gt;Running&lt;span class="hx:absolute hx:-mt-20" id="running"&gt;&lt;/span&gt;
 &lt;a href="#running" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The cells of a notebook share one Julia kernel, in the worker. A global, a
@@ -57,8 +57,8 @@ output the cell wrote before it; the cells that read it do not run, and the
 kernel keeps what it had.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;The image.&lt;/strong&gt; The kernel boots from go-embedded-julia&amp;rsquo;s prebuilt Base image,
 which is not part of the module. The first Julia cell a worker runs fetches the
-image of release v0.17.0 and loads it only if its SHA-256 is the one go-notebook
-pins (&lt;code&gt;d243d2b748afb7d331227195d835357b6502184bedcdc4bcc296854276c2f6ec&lt;/code&gt;); the verified file is kept in your user cache directory
+image of release v0.22.0 (25,661,677 bytes) and loads it only if its SHA-256 is the one go-notebook
+pins (&lt;code&gt;dcec3dc808df198aab30aac68a28420d48e167e3c8510d0f8d75d8fad567b364&lt;/code&gt;); the verified file is kept in your user cache directory
 (&lt;code&gt;go-embedded-julia/images&lt;/code&gt;) and checked again each time. The fetch is bounded
 to five minutes and tried once. The cold start is about a second. On a machine
 that is offline and has no cached image every Julia cell of the run fails at
@@ -78,10 +78,14 @@ own text (no method matching, closest candidates).&lt;/p&gt;
 &lt;p&gt;Since go-notebook v0.21.0, a Float64 &lt;code&gt;A * x&lt;/code&gt; runs through
 &lt;a href="https://github.com/go-blas/blas" target="_blank" rel="noopener"&gt;go-blas&lt;/a&gt;, a non-ASCII &lt;code&gt;uppercase&lt;/code&gt;,
 &lt;code&gt;lowercase&lt;/code&gt; or &lt;code&gt;normalize&lt;/code&gt; works, and an n×0 matrix crosses.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Known limitations&lt;/strong&gt; (go-embedded-julia v0.20.0):&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Known limitations&lt;/strong&gt; (go-embedded-julia v0.22.0):&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;A process loads one image release
 (&lt;a href="https://github.com/go-embedded-julia/julia/issues/49" target="_blank" rel="noopener"&gt;#49&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;The first Float64 matrix product a kernel shows costs about 70 million
+statements, because displaying it runs julia&amp;rsquo;s type inference inside the
+interpreter: over the 50 million limit on its first run
+(&lt;a href="https://github.com/go-embedded-julia/julia/issues/119" target="_blank" rel="noopener"&gt;#119&lt;/a&gt;).&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 data-hextra-search-id="parsing-and-names"&gt;Parsing and names&lt;span class="hx:absolute hx:-mt-20" id="parsing-and-names"&gt;&lt;/span&gt;
 &lt;a href="#parsing-and-names" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The names below are the same whether a cell runs or not.&lt;/p&gt;
@@ -193,7 +197,7 @@ hold up to twice its limit: its inputs plus its own allocations.&lt;/li&gt;
 go-rouge&amp;rsquo;s &lt;code&gt;julia&lt;/code&gt; lexer.&lt;/p&gt;
 &lt;h2 data-hextra-search-id="in-the-browser"&gt;In the browser&lt;span class="hx:absolute hx:-mt-20" id="in-the-browser"&gt;&lt;/span&gt;
 &lt;a href="#in-the-browser" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Since playground v0.18.0 the &lt;a href="https://go-notebook.github.io/playground/" target="_blank" rel="noopener"&gt;playground&lt;/a&gt;
-runs Julia cells (playground v0.21.0: go-embedded-julia v0.20.0) compiled to WebAssembly, with no
+runs Julia cells (playground v0.22.0: go-embedded-julia v0.22.0) compiled to WebAssembly, with no
 external &lt;code&gt;julia&lt;/code&gt;. It is the heaviest runtime the page has, so it is &lt;strong&gt;loaded on
 first use&lt;/strong&gt;: a Julia cell&amp;rsquo;s badge reads &lt;em&gt;Julia · loads when run (~28 MB)&lt;/em&gt;, and
 Run downloads a third core (20 MB gzipped, the second core plus the interpreter)
