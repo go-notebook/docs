@@ -6,10 +6,10 @@ tags: [cells, julia]
 ---
 
 A ` ```julia ` block is a Julia cell (parsed since go-notebook v0.6.0, **run**
-in go-notebook v0.18.0; on go-embedded-julia v0.20.0 since v0.21.2).
+in go-notebook v0.18.0; on go-embedded-julia v0.22.0 since v0.22.0).
 [go-embedded-julia](https://github.com/go-embedded-julia/julia) is the
 pure-Go Julia these cells run on: its parser for the names and the syntax
-errors, its interpreter (v0.20.0) for the running. No external `julia` is
+errors, its interpreter (v0.22.0) for the running. No external `julia` is
 started.
 
 ## Running
@@ -49,8 +49,8 @@ kernel keeps what it had.
 
 **The image.** The kernel boots from go-embedded-julia's prebuilt Base image,
 which is not part of the module. The first Julia cell a worker runs fetches the
-image of release v0.17.0 and loads it only if its SHA-256 is the one go-notebook
-pins (`d243d2b748afb7d331227195d835357b6502184bedcdc4bcc296854276c2f6ec`); the verified file is kept in your user cache directory
+image of release v0.22.0 (25,661,677 bytes) and loads it only if its SHA-256 is the one go-notebook
+pins (`dcec3dc808df198aab30aac68a28420d48e167e3c8510d0f8d75d8fad567b364`); the verified file is kept in your user cache directory
 (`go-embedded-julia/images`) and checked again each time. The fetch is bounded
 to five minutes and tried once. The cold start is about a second. On a machine
 that is offline and has no cached image every Julia cell of the run fails at
@@ -74,10 +74,14 @@ Since go-notebook v0.21.0, a Float64 `A * x` runs through
 [go-blas](https://github.com/go-blas/blas), a non-ASCII `uppercase`,
 `lowercase` or `normalize` works, and an n×0 matrix crosses.
 
-**Known limitations** (go-embedded-julia v0.20.0):
+**Known limitations** (go-embedded-julia v0.22.0):
 
 - A process loads one image release
   ([#49](https://github.com/go-embedded-julia/julia/issues/49)).
+- The first Float64 matrix product a kernel shows costs about 70 million
+  statements, because displaying it runs julia's type inference inside the
+  interpreter: over the 50 million limit on its first run
+  ([#119](https://github.com/go-embedded-julia/julia/issues/119)).
 
 ## Parsing and names
 
@@ -150,7 +154,7 @@ go-rouge's `julia` lexer.
 ## In the browser
 
 Since playground v0.18.0 the [playground](https://go-notebook.github.io/playground/)
-runs Julia cells (playground v0.21.0: go-embedded-julia v0.20.0) compiled to WebAssembly, with no
+runs Julia cells (playground v0.22.0: go-embedded-julia v0.22.0) compiled to WebAssembly, with no
 external `julia`. It is the heaviest runtime the page has, so it is **loaded on
 first use**: a Julia cell's badge reads *Julia · loads when run (~28 MB)*, and
 Run downloads a third core (20 MB gzipped, the second core plus the interpreter)
