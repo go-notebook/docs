@@ -6,10 +6,10 @@ tags: [cells, julia]
 ---
 
 A ` ```julia ` block is a Julia cell (parsed since go-notebook v0.6.0, **run**
-in go-notebook v0.18.0; on go-embedded-julia v0.24.0 since v0.23.0).
+in go-notebook v0.18.0; on go-embedded-julia v0.25.0 since v0.24.0).
 [go-embedded-julia](https://github.com/go-embedded-julia/julia) is the
 pure-Go Julia these cells run on: its parser for the names and the syntax
-errors, its interpreter (v0.24.0) for the running. No external `julia` is
+errors, its interpreter (v0.25.0) for the running. No external `julia` is
 started.
 
 ## Running
@@ -49,8 +49,8 @@ kernel keeps what it had.
 
 **The image.** The kernel boots from go-embedded-julia's prebuilt Base image,
 which is not part of the module. The first Julia cell a worker runs fetches the
-image of release v0.24.0 (25,695,765 bytes) and loads it only if its SHA-256 is the one go-notebook
-pins (`cd5ddf2107c2a553247b87c59b04f803b7104d020a5ce5bbb2c044b82ff4cb35`); the verified file is kept in your user cache directory
+image of release v0.25.0 (25,695,765 bytes) and loads it only if its SHA-256 is the one go-notebook
+pins (`a1460281911fa0bc0ec8c9b42180f698998cea9b41e51a4c95237b6c75c007db`); the verified file is kept in your user cache directory
 (`go-embedded-julia/images`) and checked again each time. The fetch is bounded
 to five minutes and tried once. The cold start is about a second. On a machine
 that is offline and has no cached image every Julia cell of the run fails at
@@ -82,7 +82,28 @@ kernel's first matrix; the v0.24.0 image ships that inference already done
 matrix of another element type (Int, Float32, Complex) may still pay it the
 first time.
 
-**Known limitations** (go-embedded-julia v0.24.0):
+Since go-notebook v0.24.0 (go-embedded-julia v0.25.0), LU and Cholesky
+factorizations work, forwarded to [go-blas](https://github.com/go-blas/blas)
+in Float64 and Float32: `lu(A)`, `A \ b` on a general square matrix,
+`factorize`, `cholesky(A)` and `cholesky(A) \ b`. A singular matrix raises
+`SingularException` and a matrix that is not positive definite raises
+`PosDefException`, as in julia.
+
+````markdown
+```julia
+A = [4.0 3.0; 6.0 3.0]
+b = [10.0, 12.0]
+x = A \ b
+```
+````
+
+**Known limitations** (go-embedded-julia v0.25.0):
+
+- `inv`, `qr`, `eigen`, `svd`, triangular solves such as
+  `UpperTriangular(A) \ B`, and complex matrices are refused for now
+  ([#67](https://github.com/go-embedded-julia/julia/issues/67)).
+- Seeded random streams and SHA hashes still differ from julia's
+  ([#126](https://github.com/go-embedded-julia/julia/issues/126)).
 
 - A process loads one image release
   ([#49](https://github.com/go-embedded-julia/julia/issues/49)).
@@ -158,11 +179,11 @@ go-rouge's `julia` lexer.
 ## In the browser
 
 Since playground v0.18.0 the [playground](https://go-notebook.github.io/playground/)
-runs Julia cells (playground v0.23.0: go-embedded-julia v0.24.0) compiled to WebAssembly, with no
+runs Julia cells (playground v0.24.0: go-embedded-julia v0.25.0) compiled to WebAssembly, with no
 external `julia`. It is the heaviest runtime the page has, so it is **loaded on
 first use**: a Julia cell's badge reads *Julia · loads when run (~28 MB)*, and
 Run downloads a third core (20 MB gzipped, the second core plus the interpreter)
-and the Base image (7.8 MB gzipped, checked against its pinned SHA-256 before it
+and the Base image (7.5 MB gzipped, checked against its pinned SHA-256 before it
 is decoded), then boots the kernel: about **28 MB and about 20 s** the first
 time, shown on the cell as it loads, then cached by the browser. Opening a
 notebook, and running the cells above its first Julia cell, download nothing for
@@ -175,7 +196,8 @@ Julia; the default, Ruby, R and Fortran cores never carry it. If the load fails
   worker is not killed. Deep recursion is a Julia `StackOverflowError`, not a
   lost core. Since playground v0.23.0, `A = [1.0 2.0; 3.0 4.0]; B = A * A`
   shows `B` within these limits on a fresh kernel (it went past the 20 million
-  statements before).
+  statements before). Since playground v0.24.0, a 2×2 `A \ b` runs within
+  them too.
 - **Julia is isolated from Go in the page.** The variables that cross in
   `notebook run` (above) do not cross in the page, in either direction: a cell
   that reads one fails with the other language's own message and a note saying
